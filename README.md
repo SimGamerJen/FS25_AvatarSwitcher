@@ -2,6 +2,8 @@
 
 Console-command driven live avatar preset switcher for Farming Simulator 25.
 
+https://youtu.be/aBGLhdvUww0
+
 ## Scope
 
 This mod changes the active/manual player avatar style stored in `gameSettings.xml` under `lastPlayerStyle`, and applies that style to the currently controlled local player in-game.
