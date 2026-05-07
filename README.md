@@ -2,7 +2,9 @@
 
 Console-command driven live avatar preset switcher for Farming Simulator 25.
 
-https://youtu.be/aBGLhdvUww0
+## Showcase Video
+
+🎥 **YouTube Showcase:** [FS25 Avatar Switcher Mod](https://youtu.be/aBGLhdvUww0)
 
 ## Scope
 
