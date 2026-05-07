@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<modDesc descVersion="92">
+    <author>SimGamerJen / ChatGPT</author>
+    <version>0.1.1.0-alpha</version>
+    <title>
+        <en>Avatar Switcher</en>
+    </title>
+    <description>
+        <en>Console-command driven live avatar preset switcher. Stores avatar presets in modSettings, writes lastPlayerStyle to gameSettings.xml, and applies presets to the active local player.</en>
+    </description>
+
+    <iconFilename>icon.dds</iconFilename>
+
+    <extraSourceFiles>
+        <sourceFile filename="scripts/AS_Logger.lua" />
+        <sourceFile filename="scripts/AS_XML.lua" />
+        <sourceFile filename="scripts/AS_Runtime.lua" />
+        <sourceFile filename="scripts/AS_Main.lua" />
+        <sourceFile filename="scripts/AS_Console.lua" />
+    </extraSourceFiles>
+</modDesc>
