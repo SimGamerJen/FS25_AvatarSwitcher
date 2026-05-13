@@ -1,7 +1,7 @@
 -- FS25_AvatarSwitcher
--- ModVersion: 0.1.1-alpha
+-- ModVersion: 0.5.3-alpha
 -- File: AS_Main.lua
--- BuildTag: 20260507.5
+-- BuildTag: 20260513.4
 
 AvatarSwitcher = AvatarSwitcher or {}
 AvatarSwitcher.modDirectory = g_currentModDirectory or ""
@@ -52,6 +52,10 @@ end
 
 function AvatarSwitcher:loadMap(name)
     self:initialize()
+
+    if self.rebuildHudLists ~= nil then
+        self:rebuildHudLists()
+    end
 end
 
 function AvatarSwitcher:deleteMap()
@@ -76,6 +80,8 @@ function AvatarSwitcher:applyPreset(presetId)
     if not ok then
         return false
     end
+
+    self.currentPresetId = preset.id
 
     local refreshed = false
     if self.tryRefreshActivePlayer ~= nil then
@@ -149,7 +155,7 @@ function AvatarSwitcher:saveCurrentAsPreset(id, ...)
     end
 
     if self.presetsById[id] ~= nil then
-        self:warn("Preset id already exists. Not overwriting in v0.1: " .. tostring(id))
+        self:warn("Preset id already exists. Not overwriting: " .. tostring(id))
         return false
     end
 
@@ -167,10 +173,23 @@ function AvatarSwitcher:saveCurrentAsPreset(id, ...)
     return ok
 end
 
+
+function AvatarSwitcher:deletePreset(presetId)
+    self:initialize()
+    local ok, deletedName = self:deletePresetFromFile(presetId)
+    if ok then
+        self:notify("Avatar preset deleted: " .. tostring(deletedName or presetId))
+    end
+    return ok
+end
+
 function AvatarSwitcher:reloadPresets()
     self:initialize()
     local ok = self:loadPresets()
     if ok then
+        if self.rebuildHudLists ~= nil then
+            self:rebuildHudLists()
+        end
         self:notify("Avatar presets reloaded")
     end
     return ok

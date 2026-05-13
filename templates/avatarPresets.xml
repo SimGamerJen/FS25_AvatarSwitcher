@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <avatarSwitcher>
     <presets>
-        <preset id="jen_default" name="Jen - Default Farmwear" category="jen">
+        <preset id="001" name="Jen - Default Farmwear" category="Jen" sortOrder="10">
             <lastPlayerStyle filename="dataS/character/playerF/playerF.xml">
                 <facegear color="1"/>
                 <onepiece color="1" name="empty"/>
@@ -17,7 +17,7 @@
             </lastPlayerStyle>
         </preset>
 
-        <preset id="jen_no_hat" name="Jen - No Hat" category="jen">
+        <preset id="002" name="Jen - No Hat" category="Jen" sortOrder="20">
             <lastPlayerStyle filename="dataS/character/playerF/playerF.xml">
                 <facegear color="1"/>
                 <onepiece color="1" name="empty"/>
@@ -33,7 +33,7 @@
             </lastPlayerStyle>
         </preset>
 
-        <preset id="contractor_template_m" name="Contractor Template - Male" category="contractor">
+        <preset id="101" name="Contractor Template - Male" category="Contractors" sortOrder="10">
             <lastPlayerStyle filename="dataS/character/playerM/playerM.xml">
                 <facegear color="1"/>
                 <onepiece color="1" name="empty"/>

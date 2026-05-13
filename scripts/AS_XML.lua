@@ -1,5 +1,5 @@
 -- FS25_AvatarSwitcher
--- ModVersion: 0.1.1-alpha
+-- ModVersion: 0.5.3-alpha
 -- File: AS_XML.lua
 
 AvatarSwitcher = AvatarSwitcher or {}
@@ -139,6 +139,7 @@ function AvatarSwitcher:loadPresets()
         local id = getXMLString(xmlFile, presetKey .. "#id")
         local name = getXMLString(xmlFile, presetKey .. "#name") or id
         local category = getXMLString(xmlFile, presetKey .. "#category") or "general"
+        local sortOrder = getXMLInt(xmlFile, presetKey .. "#sortOrder") or (i + 1)
         local style = self:readStyleFromXML(xmlFile, presetKey .. ".lastPlayerStyle")
 
         if id ~= nil and id ~= "" and style ~= nil then
@@ -146,6 +147,7 @@ function AvatarSwitcher:loadPresets()
                 id = id,
                 name = name,
                 category = category,
+                sortOrder = sortOrder,
                 style = style
             }
 
@@ -159,6 +161,21 @@ function AvatarSwitcher:loadPresets()
     end
 
     delete(xmlFile)
+
+    table.sort(self.presets, function(a, b)
+        local ac = tostring(a.category or "")
+        local bc = tostring(b.category or "")
+        if ac ~= bc then
+            return ac < bc
+        end
+        local ao = tonumber(a.sortOrder or 0) or 0
+        local bo = tonumber(b.sortOrder or 0) or 0
+        if ao ~= bo then
+            return ao < bo
+        end
+        return tostring(a.name or a.id or "") < tostring(b.name or b.id or "")
+    end)
+
     self:debug(string.format("Loaded %d avatar preset(s)", #self.presets))
     return true
 end
@@ -252,6 +269,7 @@ function AvatarSwitcher:appendPresetToFile(id, name, category, style)
     setXMLString(xmlFile, presetKey .. "#id", id)
     setXMLString(xmlFile, presetKey .. "#name", name)
     setXMLString(xmlFile, presetKey .. "#category", category)
+    setXMLInt(xmlFile, presetKey .. "#sortOrder", index + 1)
     self:writeStyleToXML(xmlFile, presetKey .. ".lastPlayerStyle", style)
 
     saveXMLFile(xmlFile)
@@ -260,4 +278,75 @@ function AvatarSwitcher:appendPresetToFile(id, name, category, style)
     self:log(string.format("Saved current avatar as preset '%s' (%s)", id, name))
     self:loadPresets()
     return true
+end
+
+function AvatarSwitcher:writePresetsToFile(presets)
+    if self.presetsFile == nil then
+        self:setupPaths()
+    end
+
+    if self.modSettingsDir ~= nil and not fileExists(self.modSettingsDir) then
+        createFolder(self.modSettingsDir)
+    end
+
+    local xmlFile = createXMLFile("avatarSwitcherPresetRewrite", self.presetsFile, "avatarSwitcher")
+    if xmlFile == nil or xmlFile == 0 then
+        self:error("Could not rewrite preset file: " .. tostring(self.presetsFile))
+        return false
+    end
+
+    for i, preset in ipairs(presets or {}) do
+        local key = string.format("avatarSwitcher.presets.preset(%d)", i - 1)
+        setXMLString(xmlFile, key .. "#id", tostring(preset.id or ""))
+        setXMLString(xmlFile, key .. "#name", tostring(preset.name or preset.id or ""))
+        setXMLString(xmlFile, key .. "#category", tostring(preset.category or "general"))
+        setXMLInt(xmlFile, key .. "#sortOrder", tonumber(preset.sortOrder or i) or i)
+        self:writeStyleToXML(xmlFile, key .. ".lastPlayerStyle", preset.style)
+    end
+
+    saveXMLFile(xmlFile)
+    delete(xmlFile)
+    return true
+end
+
+function AvatarSwitcher:deletePresetFromFile(presetId)
+    self:initialize()
+
+    presetId = tostring(presetId or "")
+    if presetId == "" then
+        self:warn("No preset id supplied for deletion")
+        return false
+    end
+
+    if self.presetsById == nil or self.presetsById[presetId] == nil then
+        self:warn("Preset not found: " .. tostring(presetId))
+        return false
+    end
+
+    local remaining = {}
+    local deletedName = nil
+    for _, preset in ipairs(self.presets or {}) do
+        if tostring(preset.id or "") == presetId then
+            deletedName = tostring(preset.name or preset.id or presetId)
+        else
+            table.insert(remaining, preset)
+        end
+    end
+
+    local ok = self:writePresetsToFile(remaining)
+    if not ok then
+        return false
+    end
+
+    if self.currentPresetId == presetId then
+        self.currentPresetId = nil
+    end
+
+    self:loadPresets()
+    if self.rebuildHudLists ~= nil then
+        self:rebuildHudLists(nil)
+    end
+
+    self:log("Deleted avatar preset: " .. tostring(deletedName or presetId) .. " (" .. tostring(presetId) .. ")")
+    return true, deletedName or presetId
 end

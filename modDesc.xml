@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<modDesc descVersion="92">
+<modDesc descVersion="107" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://validation.gdn.giants-software.com/xml/fs25/modDesc.xsd">
     <author>SimGamerJen / ChatGPT</author>
-    <version>0.1.1.0-alpha</version>
+    <version>0.5.4.0</version>
     <title>
         <en>Avatar Switcher</en>
     </title>
     <description>
-        <en>Console-command driven live avatar preset switcher. Stores avatar presets in modSettings, writes lastPlayerStyle to gameSettings.xml, and applies presets to the active local player.</en>
+        <en>Live avatar preset switcher with console commands and a clickable HUD. Stores avatar presets in modSettings, writes lastPlayerStyle to gameSettings.xml, and applies presets to the active local player. v0.5.4 strengthens the Wardrobe Save to AvatarSwitcher modal input lock by blocking WardrobeScreen class/prototype input handlers and GUI action callbacks while the AS modal is open.</en>
     </description>
 
     <iconFilename>icon.dds</iconFilename>
@@ -16,6 +16,22 @@
         <sourceFile filename="scripts/AS_XML.lua" />
         <sourceFile filename="scripts/AS_Runtime.lua" />
         <sourceFile filename="scripts/AS_Main.lua" />
+        <sourceFile filename="scripts/AS_HUD.lua" />
+        <sourceFile filename="scripts/AS_MenuEntry.lua" />
+        <sourceFile filename="scripts/AS_API.lua" />
+        <sourceFile filename="scripts/AS_InputEvents.lua" />
+        <sourceFile filename="scripts/AS_Wardrobe.lua" />
         <sourceFile filename="scripts/AS_Console.lua" />
     </extraSourceFiles>
+
+    <actions>
+        <action name="ASZ_HUD" category="MISC" axisType="HALF" />
+    </actions>
+
+    <l10n>
+        <text name="input_ASZ_HUD">
+            <en>Open Avatar Switcher</en>
+        </text>
+    </l10n>
+
 </modDesc>

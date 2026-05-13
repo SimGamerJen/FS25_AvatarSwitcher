@@ -1,7 +1,7 @@
 -- FS25_AvatarSwitcher
--- ModVersion: 0.1.1-alpha
+-- ModVersion: 0.5.3-alpha
 -- File: AS_Runtime.lua
--- BuildTag: 20260507.5
+-- BuildTag: 20260510.11
 
 AvatarSwitcher = AvatarSwitcher or {}
 
