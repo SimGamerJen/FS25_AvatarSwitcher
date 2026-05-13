@@ -1,89 +1,64 @@
-# FS25_AvatarSwitcher v0.1.1-alpha
+# FS25 AvatarSwitcher
 
-Console-command driven live avatar preset switcher for Farming Simulator 25.
+Save and switch between player appearances in Farming Simulator 25.
 
-## Showcase Video
+## Features
 
-🎥 **YouTube Showcase:** [FS25 Avatar Switcher Mod](https://youtu.be/aBGLhdvUww0)
+- Save the current wardrobe appearance to AvatarSwitcher.
+- Switch saved appearances from the AvatarSwitcher interface.
+- Organise appearances by category.
+- Delete saved appearances from the selection interface.
+- Optional HelperProfiles integration for assigning appearances to AI/helper profiles.
+- Console diagnostics for troubleshooting.
 
-## Scope
+## Usage
 
-This mod changes the active/manual player avatar style stored in `gameSettings.xml` under `lastPlayerStyle`, and applies that style to the currently controlled local player in-game.
+1. Open the in-game wardrobe.
+2. Click "Save to AvatarSwitcher".
+3. Enter an ID, description, and category.
+4. Open AvatarSwitcher using the configured input binding.
+5. Select a category and appearance.
+6. Apply or delete appearances as needed.
 
-It does **not** alter AI workers, HelperProfiles, helper names, or hired worker assignment.
+## Known limitations
 
-## Config file
+- Runtime character refresh depends on Farming Simulator 25's player/wardrobe systems.
+- Some mod conflicts may affect GUI/input behaviour.
+- Multiplayer is not yet formally tested.
 
-On first load, the mod seeds this file:
+## Known Issues
 
-```text
-Documents/My Games/FarmingSimulator2025/modSettings/FS25_AvatarSwitcher/avatarPresets.xml
-```
+- Multiplayer support has not been fully validated.
+- Some third-party GUI/input mods may conflict with AvatarSwitcher overlays.
+- Wardrobe integration has been tested against FS25 1.18.0.0.
+- If the Save to AvatarSwitcher button does not appear, run `asWardrobeDebug` from the console and include the output in a bug report.
 
-The preset file is global across all savegames.
+## Console Commands
 
-## Console commands
+AvatarSwitcher includes several console commands for testing, diagnostics, and fallback control.
 
-Long commands:
+| Command | Description |
+|---|---|
+| `avatarList` | Lists available AvatarSwitcher presets in the console. Useful for checking whether `avatarPresets.xml` has loaded correctly. |
+| `asList` | Short alias for `avatarList`. |
+| `avatarUse <presetId>` | Applies the specified preset by ID. Useful as a fallback if the GUI is unavailable. |
+| `asUse <presetId>` | Short alias for `avatarUse <presetId>`. |
+| `avatarDelete <presetId>` | Deletes a saved preset by ID from AvatarSwitcher. Useful if a preset cannot be deleted through the GUI. |
+| `asDelete <presetId>` | Short alias for `avatarDelete <presetId>`. |
+| `avatarInputDebug` | Prints input-binding and action-event registration diagnostics. Use this if the AvatarSwitcher open key/button does not work. |
+| `asInputDebug` | Short alias for `avatarInputDebug`. |
+| `avatarWardrobeDebug` | Prints wardrobe integration diagnostics, including whether `WardrobeScreen` hooks are active and whether the save modal/input lock is installed. |
+| `asWardrobeDebug` | Short alias for `avatarWardrobeDebug`. |
+| `avatarMenuDebug` | Prints legacy menu-entry diagnostics. Mainly retained for compatibility/debugging after the old top-right menu button was retired. |
+| `asMenuDebug` | Short alias for `avatarMenuDebug`. |
+| `avatarProbe` | Attempts to probe the current player/avatar runtime state and reports what AvatarSwitcher can detect. Useful when appearance application does not appear to refresh correctly. |
+| `asProbe` | Short alias for `avatarProbe`. |
 
-```text
-avatarList
-avatarList <category>
-avatarUse <presetId>
-avatarCurrent
-avatarSaveCurrent <presetId> <display name>
-avatarReload
-avatarProbe
-avatarRefresh
-```
+### Recommended debug commands for bug reports
 
-Short aliases:
+If reporting an issue, please include the relevant console output:
 
-```text
-asList
-asList <category>
-asUse <presetId>
-asCurrent
-asSaveCurrent <presetId> <display name>
-asReload
-asProbe
-asRefresh
-```
-
-## Suggested workflow
-
-1. Create an outfit using the normal FS25 wardrobe/player customisation screen.
-2. Exit the customisation screen so FS25 writes it to `gameSettings.xml`.
-3. Run:
-
-```text
-asSaveCurrent jen_winter Jen - Winter Outfit
-```
-
-4. Later, switch to it with:
-
-```text
-asUse jen_winter
-```
-
-## What v0.1.1-alpha does
-
-- Loads avatar presets from `modSettings/FS25_AvatarSwitcher/avatarPresets.xml`.
-- Writes the selected preset to `gameSettings.xml`.
-- Updates `g_gameSettings.lastPlayerStyle` in memory.
-- Builds a real `PlayerStyle` object from the selected preset.
-- Resolves the active local player through `g_currentMission.playerSystem`.
-- Applies the style live using `player:setStyleAsync(playerStyle, false, nil, true)` when available.
-- Keeps `asProbe` / `avatarProbe` for diagnostics.
-
-## Backup
-
-Before the first write, the mod creates:
-
-```text
-Documents/My Games/FarmingSimulator2025/gameSettings.avatarSwitcherBackup.xml
-```
-
-## Notes
-
-This is currently tested as a single-player/local-player focused mod. Multiplayer behaviour is not claimed yet.
+- If the open key/button does not work: `asInputDebug`
+- If the wardrobe save button does not appear: `asWardrobeDebug`
+- If a saved appearance does not apply correctly: `asProbe`
+- If presets are missing or not loading: `avatarList`
