@@ -20,6 +20,14 @@ Save and switch between player appearances in Farming Simulator 25.
 5. Select a category and appearance.
 6. Apply or delete appearances as needed.
 
+Enter a preset ID, description, and category before saving the current wardrobe appearance. 
+
+<img width="3836" height="2150" alt="wardrobe_save_screen" src="https://github.com/user-attachments/assets/9142fff3-3288-447f-917b-aeca1bf24e5c" />
+
+Select a category and saved appearance, then apply it to the player.
+
+<img width="1622" height="689" alt="avatar_switcher_screen" src="https://github.com/user-attachments/assets/5b930217-fac6-432f-a8c8-f6bb6386ae87" />
+
 ## Known limitations
 
 - Runtime character refresh depends on Farming Simulator 25's player/wardrobe systems.
