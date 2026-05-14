@@ -1,52 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <avatarSwitcher>
     <presets>
-        <preset id="001" name="Jen - Default Farmwear" category="Jen" sortOrder="10">
-            <lastPlayerStyle filename="dataS/character/playerF/playerF.xml">
-                <facegear color="1"/>
-                <onepiece color="1" name="empty"/>
-                <bottom color="5" name="jeans"/>
-                <face color="1" name="head01"/>
-                <top color="13" name="windbreaker"/>
-                <gloves color="2" name="empty"/>
-                <headgear color="12" name="beanie"/>
-                <glasses color="1" name="empty"/>
-                <footwear color="1" name="racing"/>
-                <hairStyle color="16" name="hair16"/>
-                <beard color="16"/>
-            </lastPlayerStyle>
-        </preset>
-
-        <preset id="002" name="Jen - No Hat" category="Jen" sortOrder="20">
-            <lastPlayerStyle filename="dataS/character/playerF/playerF.xml">
-                <facegear color="1"/>
-                <onepiece color="1" name="empty"/>
-                <bottom color="5" name="jeans"/>
-                <face color="1" name="head01"/>
-                <top color="13" name="windbreaker"/>
-                <gloves color="2" name="empty"/>
-                <headgear color="1" name="empty"/>
-                <glasses color="1" name="empty"/>
-                <footwear color="1" name="racing"/>
-                <hairStyle color="16" name="hair16"/>
-                <beard color="16"/>
-            </lastPlayerStyle>
-        </preset>
-
-        <preset id="101" name="Contractor Template - Male" category="Contractors" sortOrder="10">
-            <lastPlayerStyle filename="dataS/character/playerM/playerM.xml">
-                <facegear color="1"/>
-                <onepiece color="1" name="empty"/>
-                <bottom color="5" name="jeans"/>
-                <face color="1" name="head01"/>
-                <top color="13" name="windbreaker"/>
-                <gloves color="2" name="empty"/>
-                <headgear color="12" name="beanie"/>
-                <glasses color="1" name="empty"/>
-                <footwear color="1" name="racing"/>
-                <hairStyle color="16" name="hair16"/>
-                <beard color="16"/>
-            </lastPlayerStyle>
-        </preset>
     </presets>
 </avatarSwitcher>
