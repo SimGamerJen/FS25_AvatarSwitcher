@@ -42,12 +42,16 @@ Documents\My Games\FarmingSimulator2025\mods
    - **Category** — grouping label, for example `witcombe`, `judithplains`, or `custom`.
 4. Click **SAVE** or press the Enter/Accept action.
 
+<img width="1504" height="1578" alt="wardrobe_save_screen" src="https://github.com/user-attachments/assets/d4cb985d-c765-4f43-b225-cad60bdc8ad3" />
+
 ### Apply an appearance
 
 1. Use the configured **Open Avatar Switcher** input binding.
 2. Select a category on the left.
 3. Select an appearance on the right.
 4. Click **APPLY**.
+
+<img width="2317" height="1262" alt="avatar_switcher_screen" src="https://github.com/user-attachments/assets/b02fa1b9-9bbc-4e85-82d1-b72dac9538b4" />
 
 ### Delete an appearance
 
@@ -59,24 +63,6 @@ Documents\My Games\FarmingSimulator2025\mods
 ## Suggested Screenshot Locations
 
 Screenshots are not bundled with the mod ZIP, but the README is prepared for a `docs/images` folder in the GitHub repository.
-
-Recommended files:
-
-```text
-docs/images/avatar-switcher-main.png
-docs/images/wardrobe-save-button.png
-docs/images/save-avatar-dialog.png
-docs/images/delete-confirmation.png
-docs/images/debug-console-output.png
-```
-
-Suggested README placement:
-
-- Put `avatar-switcher-main.png` near the top of the README as the hero image.
-- Put `wardrobe-save-button.png` in the “Save an appearance from the Wardrobe” section.
-- Put `save-avatar-dialog.png` immediately after the Wardrobe save instructions.
-- Put `delete-confirmation.png` in the delete section.
-- Put `debug-console-output.png` in the troubleshooting section.
 
 ## Console Commands
 
