@@ -1,5 +1,5 @@
 -- FS25_AvatarSwitcher
--- ModVersion: 0.5.3-alpha
+-- ModVersion: 0.6.0-beta
 -- File: AS_API.lua
 -- BuildTag: 20260513.1
 -- Public bridge API for other mods such as FS25_HelperProfiles.
@@ -152,4 +152,4 @@ if _G ~= nil then
     _G.AvatarSwitcherAPI = AvatarSwitcherAPI
     _G.FS25_AvatarSwitcherAPI = AvatarSwitcherAPI
 end
-print("[AvatarSwitcherAPI] Public API registered v0.5.3-alpha | global=" .. tostring(_G ~= nil and _G.AvatarSwitcherAPI ~= nil))
+print("[AvatarSwitcherAPI] Public API registered v0.6.0-beta | global=" .. tostring(_G ~= nil and _G.AvatarSwitcherAPI ~= nil))

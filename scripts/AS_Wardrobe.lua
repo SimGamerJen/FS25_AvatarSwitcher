@@ -1,11 +1,10 @@
 -- FS25_AvatarSwitcher
--- ModVersion: 0.5.4-alpha
+-- ModVersion: 0.6.0-beta
 -- File: AS_Wardrobe.lua
--- BuildTag: 20260513.7
--- Wardrobe integration: adds a small "Save to AvatarSwitcher" overlay button
--- while the in-game player wardrobe/player-style GUI is open. The button opens
--- a lightweight modal that saves the currently edited appearance as an
--- AvatarSwitcher preset without requiring console commands.
+-- BuildTag: 20260514.8
+-- Wardrobe integration: injects a small SAVE button while the in-game
+-- player wardrobe/player-style GUI is open. The button opens the native
+-- AvatarSwitcher XML save dialog so appearances can be saved without console commands.
 
 AvatarSwitcher = AvatarSwitcher or {}
 
@@ -26,6 +25,14 @@ AvatarSwitcher.Wardrobe = AvatarSwitcher.Wardrobe or {
     keyHookInstalled = false,
     hookAttempted = false,
     hookStatus = "not attempted",
+    nativeButtonHookInstalled = false,
+    nativeButtonInjected = false,
+    nativeButtonActive = false,
+    nativeButtonFallback = false,
+    nativeButtonStatus = "not attempted",
+    embeddedButton = nil,
+    embeddedButtonActive = false,
+    embeddedButtonStatus = "not attempted",
 }
 
 local function ASW_lower(v)
@@ -79,6 +86,265 @@ local function ASW_shouldConsumeWardrobeInput()
         and AvatarSwitcher.Wardrobe.modalVisible == true
 end
 
+
+local function ASW_getWardrobeSaveButtonInfo()
+    local W = AvatarSwitcher ~= nil and AvatarSwitcher.Wardrobe or nil
+    if W == nil then return nil end
+
+    if W.nativeSaveButtonInfo == nil then
+        local action = nil
+        if InputAction ~= nil then
+            action = InputAction.MENU_EXTRA_1 or InputAction.MENU_ACTIVATE or InputAction.MENU_ACCEPT
+        end
+        W.nativeSaveButtonInfo = {
+            showWhenPaused = true,
+            inputAction = action,
+            text = "SAVE",
+            callback = function()
+                local wardrobe = AvatarSwitcher ~= nil and AvatarSwitcher.Wardrobe or nil
+                if wardrobe ~= nil and wardrobe.openModal ~= nil then
+                    wardrobe:openModal()
+                end
+            end
+        }
+    end
+
+    return W.nativeSaveButtonInfo
+end
+
+local function ASW_buttonInfoLooksLikeSave(buttonInfo)
+    if type(buttonInfo) ~= "table" then return false end
+    if buttonInfo == ASW_getWardrobeSaveButtonInfo() then return true end
+    local text = ASW_lower(buttonInfo.text)
+    return text == "save" or text == "save to avatarswitcher"
+end
+
+local function ASW_tableContainsButtonInfo(buttonInfos, buttonInfo)
+    if type(buttonInfos) ~= "table" then return false end
+    for _, info in ipairs(buttonInfos) do
+        if info == buttonInfo or ASW_buttonInfoLooksLikeSave(info) then return true end
+    end
+    return false
+end
+
+local function ASW_findButtonList(screen)
+    if type(screen) ~= "table" then return nil end
+    for _, key in ipairs({"menuButton", "menuButtons", "buttons", "buttonBox"}) do
+        if type(screen[key]) == "table" and type(screen[key][1]) == "table" and type(screen[key][1].clone) == "function" then
+            return screen[key]
+        end
+    end
+    return nil
+end
+
+local function ASW_ensurePhysicalMenuButtons(screen, requiredCount)
+    if type(screen) ~= "table" then return false end
+    requiredCount = tonumber(requiredCount) or 0
+    if requiredCount <= 0 then return false end
+
+    local buttonList = ASW_findButtonList(screen)
+    if type(buttonList) ~= "table" then return false end
+    if #buttonList >= requiredCount then return true end
+
+    local template = buttonList[1]
+    if type(template) ~= "table" or type(template.clone) ~= "function" or template.parent == nil then return false end
+
+    while #buttonList < requiredCount do
+        local newButton = template:clone(template.parent)
+        newButton.id = string.format("asWardrobeMenuButton[%d]", #buttonList + 1)
+        table.insert(buttonList, newButton)
+    end
+
+    return true
+end
+
+local function ASW_injectNativeWardrobeSaveButton(screen)
+    local W = AvatarSwitcher ~= nil and AvatarSwitcher.Wardrobe or nil
+    if W == nil or type(screen) ~= "table" then return false end
+
+    local saveButtonInfo = ASW_getWardrobeSaveButtonInfo()
+    if saveButtonInfo == nil then return false end
+
+    if type(screen.menuButtonInfo) ~= "table" then
+        W.nativeButtonActive = false
+        W.nativeButtonFallback = true
+        W.nativeButtonStatus = "WardrobeScreen has no menuButtonInfo table"
+        return false
+    end
+
+    if not ASW_tableContainsButtonInfo(screen.menuButtonInfo, saveButtonInfo) then
+        -- Keep Back/Cancel-style controls first, append SAVE to the native strip.
+        table.insert(screen.menuButtonInfo, saveButtonInfo)
+    end
+
+    ASW_ensurePhysicalMenuButtons(screen, #screen.menuButtonInfo)
+
+    if type(screen.setMenuButtonInfoDirty) == "function" then
+        screen:setMenuButtonInfoDirty()
+    end
+
+    W.nativeButtonInjected = true
+    W.nativeButtonActive = true
+    W.nativeButtonFallback = false
+    W.nativeButtonStatus = "native WardrobeScreen menuButtonInfo injection active"
+    return true
+end
+
+
+local function ASW_isGuiButtonCandidate(element)
+    return type(element) == "table"
+        and type(element.clone) == "function"
+        and type(element.setText) == "function"
+        and type(element.setInputAction) == "function"
+        and type(element.setPosition) == "function"
+        and type(element.setVisible) == "function"
+        and type(element.absPosition) == "table"
+        and type(element.absSize) == "table"
+        and element.parent ~= nil
+end
+
+local function ASW_collectGuiButtons(element, out, visited, depth)
+    if type(element) ~= "table" then return end
+    visited = visited or {}
+    out = out or {}
+    depth = tonumber(depth) or 0
+    if depth > 12 or visited[element] == true then return end
+    visited[element] = true
+
+    if ASW_isGuiButtonCandidate(element) then
+        local y = tonumber(element.absPosition[2]) or 1
+        local h = tonumber(element.absSize[2]) or 0
+        local w = tonumber(element.absSize[1]) or 0
+        -- Wardrobe bottom action buttons live in the lowest strip of the screen.
+        if y <= 0.12 and h >= 0.018 and h <= 0.08 and w >= 0.035 then
+            table.insert(out, element)
+        end
+    end
+
+    if type(element.elements) == "table" then
+        for _, child in ipairs(element.elements) do
+            ASW_collectGuiButtons(child, out, visited, depth + 1)
+        end
+    end
+end
+
+local function ASW_findWardrobeBottomButtonTemplate(screen)
+    local buttons = {}
+    ASW_collectGuiButtons(screen, buttons, {}, 0)
+    if #buttons == 0 then return nil end
+
+    table.sort(buttons, function(a, b)
+        local ay = tonumber(a.absPosition[2]) or 1
+        local by = tonumber(b.absPosition[2]) or 1
+        if math.abs(ay - by) > 0.01 then return ay < by end
+        return (tonumber(a.absPosition[1]) or 0) > (tonumber(b.absPosition[1]) or 0)
+    end)
+
+    -- Prefer the right-most visible bottom action button as the style template.
+    for _, button in ipairs(buttons) do
+        if button.getIsVisible == nil or button:getIsVisible() then
+            return button
+        end
+    end
+
+    return buttons[1]
+end
+
+local function ASW_installEmbeddedWardrobeSaveButton(screen)
+    local W = AvatarSwitcher ~= nil and AvatarSwitcher.Wardrobe or nil
+    if W == nil or type(screen) ~= "table" then return false end
+
+    if W.embeddedButton ~= nil then
+        if type(W.embeddedButton.setVisible) == "function" then W.embeddedButton:setVisible(true) end
+        W.embeddedButtonActive = true
+        W.embeddedButtonStatus = "embedded Wardrobe GUI button active"
+        return true
+    end
+
+    local template = ASW_findWardrobeBottomButtonTemplate(screen)
+    if template == nil or template.parent == nil then
+        W.embeddedButtonActive = false
+        W.embeddedButtonStatus = "no bottom Wardrobe button template found"
+        return false
+    end
+
+    local ok, newButton = pcall(function()
+        return template:clone(template.parent, false, true, true)
+    end)
+    if not ok or newButton == nil then
+        W.embeddedButtonActive = false
+        W.embeddedButtonStatus = "failed to clone Wardrobe bottom button"
+        return false
+    end
+
+    W.embeddedButton = newButton
+    newButton.id = "asWardrobeSaveButton"
+    newButton.name = "asWardrobeSaveButton"
+    newButton.onClickCallback = function()
+        local wardrobe = AvatarSwitcher ~= nil and AvatarSwitcher.Wardrobe or nil
+        if wardrobe ~= nil and wardrobe.openModal ~= nil then
+            wardrobe:openModal()
+        end
+    end
+
+    if type(newButton.setText) == "function" then newButton:setText("Save") end
+    if type(newButton.setInputAction) == "function" then newButton:setInputAction("MENU_EXTRA_2") end
+    if type(newButton.setDisabled) == "function" then newButton:setDisabled(false) end
+    if type(newButton.setVisible) == "function" then newButton:setVisible(true) end
+
+    -- Keep the cloned control in the bottom strip rather than the old top-right overlay.
+    -- Prefer placing it immediately left of the right-most bottom action button.
+    local gap = 0.012
+    local tx = (type(template.position) == "table" and tonumber(template.position[1])) or 0.80
+    local ty = (type(template.position) == "table" and tonumber(template.position[2])) or 0.0
+    local tw = (type(template.size) == "table" and tonumber(template.size[1])) or (type(template.absSize) == "table" and tonumber(template.absSize[1])) or 0.10
+    local nw = tw
+    local nh = (type(template.size) == "table" and tonumber(template.size[2])) or (type(template.absSize) == "table" and tonumber(template.absSize[2])) or nil
+
+    if type(newButton.setSize) == "function" and nw ~= nil and nh ~= nil then
+        newButton:setSize(nw, nh)
+    end
+    if type(newButton.setPosition) == "function" then
+        newButton:setPosition(math.max(0.0, tx - nw - gap), ty)
+    end
+    if type(newButton.updateAbsolutePosition) == "function" then newButton:updateAbsolutePosition() end
+
+    if template.parent ~= nil then
+        if type(template.parent.invalidateLayout) == "function" then pcall(template.parent.invalidateLayout, template.parent) end
+        if type(template.parent.updateLayout) == "function" then pcall(template.parent.updateLayout, template.parent) end
+        if type(template.parent.updateAbsolutePosition) == "function" then pcall(template.parent.updateAbsolutePosition, template.parent) end
+    end
+
+    W.embeddedButtonActive = true
+    W.embeddedButtonStatus = "embedded Wardrobe GUI button cloned from bottom action row"
+    return true
+end
+
+local function ASW_installNativeWardrobeButtonHook()
+    local W = AvatarSwitcher ~= nil and AvatarSwitcher.Wardrobe or nil
+    if W == nil or W.nativeButtonHookInstalled == true then return end
+    if WardrobeScreen == nil then
+        W.nativeButtonStatus = "WardrobeScreen global not available yet"
+        return
+    end
+
+    if type(WardrobeScreen.updateMenuButtons) == "function" then
+        local oldUpdateMenuButtons = WardrobeScreen.updateMenuButtons
+        WardrobeScreen.updateMenuButtons = function(screen, ...)
+            local r = oldUpdateMenuButtons(screen, ...)
+            ASW_injectNativeWardrobeSaveButton(screen)
+            return r
+        end
+        W.nativeButtonHookInstalled = true
+        W.nativeButtonStatus = "hooked WardrobeScreen.updateMenuButtons"
+    else
+        -- Some GUI screens build the button strip once onOpen rather than through
+        -- updateMenuButtons. We still attempt direct injection on open/draw/update.
+        W.nativeButtonHookInstalled = true
+        W.nativeButtonStatus = "WardrobeScreen.updateMenuButtons not found; using direct injection fallback"
+    end
+end
+
 local function ASW_installWardrobeClassModalBlockers()
     local W = AvatarSwitcher ~= nil and AvatarSwitcher.Wardrobe or nil
     if W == nil or W.classBlockersInstalled == true then return end
@@ -112,12 +378,14 @@ local function ASW_installWardrobeClassModalBlockers()
             if ASW_shouldConsumeWardrobeInput() then
                 local w = AvatarSwitcher.Wardrobe
 
-                if methodName == "keyEvent" and w ~= nil and w.keyEvent ~= nil then
-                    local unicode, sym, modifier, isDown = ...
-                    w:keyEvent(unicode, sym, modifier, isDown)
-                elseif methodName == "mouseEvent" and w ~= nil and w.mouseEvent ~= nil then
-                    local posX, posY, isDown, isUp, button = ...
-                    w:mouseEvent(posX, posY, isDown, isUp, button)
+                if w ~= nil and w.nativeDialogActive ~= true then
+                    if methodName == "keyEvent" and w.keyEvent ~= nil then
+                        local unicode, sym, modifier, isDown = ...
+                        w:keyEvent(unicode, sym, modifier, isDown)
+                    elseif methodName == "mouseEvent" and w.mouseEvent ~= nil then
+                        local posX, posY, isDown, isUp, button = ...
+                        w:mouseEvent(posX, posY, isDown, isUp, button)
+                    end
                 end
 
                 -- GIANTS callbacks are not perfectly consistent:
@@ -166,6 +434,7 @@ local function ASW_installWardrobeScreenHooks()
     end
 
     ASW_installWardrobeClassModalBlockers()
+    ASW_installNativeWardrobeButtonHook()
 
     local function onOpen(screen)
         local wardrobe = AvatarSwitcher ~= nil and AvatarSwitcher.Wardrobe or nil
@@ -174,6 +443,8 @@ local function ASW_installWardrobeScreenHooks()
             wardrobe.activeScreen = screen
             wardrobe.detected = true
             wardrobe.hookStatus = "WardrobeScreen hook active"
+            ASW_injectNativeWardrobeSaveButton(screen)
+            if wardrobe.nativeButtonActive ~= true then ASW_installEmbeddedWardrobeSaveButton(screen) end
         end
     end
 
@@ -184,6 +455,8 @@ local function ASW_installWardrobeScreenHooks()
             wardrobe.activeScreen = nil
             wardrobe.detected = false
             wardrobe.buttonRect = nil
+            if wardrobe.embeddedButton ~= nil and type(wardrobe.embeddedButton.setVisible) == "function" then wardrobe.embeddedButton:setVisible(false) end
+            wardrobe.embeddedButtonActive = false
             if wardrobe.modalVisible ~= true then wardrobe.rects = {} end
             wardrobe.hookStatus = "WardrobeScreen closed"
         elseif wardrobe ~= nil then
@@ -191,6 +464,8 @@ local function ASW_installWardrobeScreenHooks()
             wardrobe.activeScreen = nil
             wardrobe.detected = false
             wardrobe.buttonRect = nil
+            if wardrobe.embeddedButton ~= nil and type(wardrobe.embeddedButton.setVisible) == "function" then wardrobe.embeddedButton:setVisible(false) end
+            wardrobe.embeddedButtonActive = false
             wardrobe.hookStatus = "WardrobeScreen closed"
         end
     end
@@ -201,6 +476,12 @@ local function ASW_installWardrobeScreenHooks()
             wardrobe.active = true
             wardrobe.activeScreen = screen
             wardrobe.detected = true
+            if wardrobe.nativeButtonActive ~= true then
+                ASW_injectNativeWardrobeSaveButton(screen)
+            end
+            if wardrobe.nativeButtonActive ~= true then
+                ASW_installEmbeddedWardrobeSaveButton(screen)
+            end
         end
     end
 
@@ -738,24 +1019,29 @@ end
 
 function AvatarSwitcher.Wardrobe:openModal()
     if AvatarSwitcher ~= nil and AvatarSwitcher.initialize ~= nil then AvatarSwitcher:initialize() end
-    self.modalVisible = true
-    self.focus = "id"
-    self.rects = {}
-    if self.fields == nil then self.fields = {} end
-    self.fields.id = self.fields.id or ""
-    self.fields.description = self.fields.description or ""
-    self.fields.category = self.fields.category or "custom"
     ASW_installWardrobeClassModalBlockers()
-    self:installModalInputBlockers()
-    if self.activeScreen ~= nil and type(self.activeScreen.removeActionEvents) == "function" then
-        pcall(self.activeScreen.removeActionEvents, self.activeScreen)
-        self._removedWardrobeActionEvents = true
+
+    if AvatarSwitcher ~= nil and AvatarSwitcher.openWardrobeSaveDialog ~= nil then
+        AvatarSwitcher:openWardrobeSaveDialog()
+    else
+        -- Fallback for partial loads: keep the legacy raw modal available.
+        self.nativeDialogActive = false
+        self.modalVisible = true
+        self.focus = "id"
+        self.rects = {}
+        if self.fields == nil then self.fields = {} end
+        self.fields.id = self.fields.id or ""
+        self.fields.description = self.fields.description or ""
+        self.fields.category = self.fields.category or "custom"
+        self:installModalInputBlockers()
+        self:flash("Save current wardrobe appearance", 1.4)
     end
-    self:flash("Save current wardrobe appearance", 1.4)
 end
 
 function AvatarSwitcher.Wardrobe:closeModal(clear)
     self:removeModalInputBlockers()
+    self.nativeDialogActive = false
+    self.saveDialogOpen = false
     self.modalVisible = false
     self.rects = {}
     if clear == true then
@@ -765,12 +1051,12 @@ function AvatarSwitcher.Wardrobe:closeModal(clear)
 end
 
 function AvatarSwitcher.Wardrobe:drawButton()
-    local w, h = 0.175, 0.036
-    local x, y = 0.805, 0.91
+    local w, h = 0.095, 0.036
+    local x, y = 0.885, 0.91
     self.buttonRect = { id = "openWardrobeSave", x = x, y = y, w = w, h = h }
     ASW_drawRect(x, y, w, h, 0.035, 0.035, 0.04, 0.94)
     ASW_drawRect(x, y + h - 0.002, w, 0.002, 0.72, 0.82, 0.95, 0.62)
-    ASW_text(x + 0.010, y + 0.011, 0.0135, "Save to AvatarSwitcher", 1, 1, 1, 1)
+    ASW_text(x + 0.023, y + 0.011, 0.0135, "SAVE", 1, 1, 1, 1)
 end
 
 function AvatarSwitcher.Wardrobe:drawTextField(id, label, x, y, w, h, maxLen)
@@ -846,13 +1132,26 @@ function AvatarSwitcher.Wardrobe:draw()
     self.detected = wardrobeOpen
 
     if self.modalVisible == true then
-        self:drawModal()
+        if self.nativeDialogActive ~= true then
+            self:drawModal()
+        end
         return
     end
 
     if wardrobeOpen then
-        self:drawButton()
+        if self.activeScreen ~= nil and self.nativeButtonActive ~= true then
+            ASW_injectNativeWardrobeSaveButton(self.activeScreen)
+        end
+        if self.activeScreen ~= nil and self.nativeButtonActive ~= true and self.embeddedButtonActive ~= true then
+            ASW_installEmbeddedWardrobeSaveButton(self.activeScreen)
+        end
+        if self.nativeButtonActive == true or self.embeddedButtonActive == true then
+            self.buttonRect = nil
+        else
+            self:drawButton()
+        end
     else
+        self.nativeButtonActive = false
         self.buttonRect = nil
     end
 end
@@ -860,6 +1159,7 @@ end
 function AvatarSwitcher.Wardrobe:update(dt)
     ASW_installWardrobeScreenHooks()
     ASW_installWardrobeClassModalBlockers()
+    ASW_installNativeWardrobeButtonHook()
     if self.modalVisible == true and self.installModalInputBlockers ~= nil then
         self:installModalInputBlockers()
     end
@@ -979,7 +1279,9 @@ function AvatarSwitcher:debugWardrobeStatus()
     self:log("[WardrobeDebug] detected: " .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.detected))
     self:log("[WardrobeDebug] active hook state: " .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.active))
     self:log("[WardrobeDebug] hooks installed: " .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.hooksInstalled) .. " | draw=" .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.drawHookInstalled) .. " | mouse=" .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.mouseHookInstalled) .. " | key=" .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.keyHookInstalled) .. " | status=" .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.hookStatus))
-    self:log("[WardrobeDebug] modal visible: " .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.modalVisible) .. " | modal blockers=" .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe._modalInputBlockerCount or 0) .. " | disabled action events=" .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe._modalDisabledActionEventCount or 0) .. " | class blockers=" .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.classBlockersInstalled))
+    self:log("[WardrobeDebug] modal visible: " .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.modalVisible) .. " | native dialog=" .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.nativeDialogActive) .. " | modal blockers=" .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe._modalInputBlockerCount or 0) .. " | disabled action events=" .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe._modalDisabledActionEventCount or 0) .. " | class blockers=" .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.classBlockersInstalled))
+    self:log("[WardrobeDebug] native SAVE button: hook=" .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.nativeButtonHookInstalled) .. " | injected=" .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.nativeButtonInjected) .. " | active=" .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.nativeButtonActive) .. " | fallback=" .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.nativeButtonFallback) .. " | status=" .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.nativeButtonStatus))
+    self:log("[WardrobeDebug] embedded SAVE button: active=" .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.embeddedButtonActive) .. " | status=" .. tostring(AvatarSwitcher.Wardrobe ~= nil and AvatarSwitcher.Wardrobe.embeddedButtonStatus))
     self:log("[WardrobeDebug] WardrobeScreen global: " .. tostring(WardrobeScreen ~= nil))
     self:log("[WardrobeDebug] g_gui available: " .. tostring(g_gui ~= nil))
     local names = ASW_getGuiNameCandidates()

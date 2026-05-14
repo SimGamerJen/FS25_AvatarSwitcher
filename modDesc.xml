@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="107" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://validation.gdn.giants-software.com/xml/fs25/modDesc.xsd">
     <author>SimGamerJen / ChatGPT</author>
-    <version>0.5.4.0</version>
+    <version>0.6.0.0</version>
     <title>
         <en>Avatar Switcher</en>
     </title>
     <description>
-        <en>Live avatar preset switcher with console commands and a clickable HUD. Stores avatar presets in modSettings, writes lastPlayerStyle to gameSettings.xml, and applies presets to the active local player. v0.5.4 strengthens the Wardrobe Save to AvatarSwitcher modal input lock by blocking WardrobeScreen class/prototype input handlers and GUI action callbacks while the AS modal is open.</en>
+        <en>Save, manage, and apply player avatar presets in Farming Simulator 25. Includes a native FS25-style AvatarSwitcher picker, embedded Wardrobe SAVE button, XML save dialog, category filtering, preset deletion, and console diagnostics. v0.6.0-beta is the first public beta release candidate.</en>
     </description>
 
     <iconFilename>icon.dds</iconFilename>
@@ -16,6 +16,8 @@
         <sourceFile filename="scripts/AS_XML.lua" />
         <sourceFile filename="scripts/AS_Runtime.lua" />
         <sourceFile filename="scripts/AS_Main.lua" />
+        <sourceFile filename="scripts/AS_Dialog.lua" />
+        <sourceFile filename="scripts/AS_SaveDialog.lua" />
         <sourceFile filename="scripts/AS_HUD.lua" />
         <sourceFile filename="scripts/AS_MenuEntry.lua" />
         <sourceFile filename="scripts/AS_API.lua" />

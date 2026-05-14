@@ -1,5 +1,5 @@
 -- FS25_AvatarSwitcher
--- ModVersion: 0.5.3-alpha
+-- ModVersion: 0.6.0-beta
 -- File: AS_Console.lua
 -- BuildTag: 20260513.4
 

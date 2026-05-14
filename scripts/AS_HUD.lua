@@ -1,7 +1,7 @@
 -- FS25_AvatarSwitcher
--- ModVersion: 0.5.3-alpha
+-- ModVersion: 0.6.0-beta
 -- File: AS_HUD.lua
--- BuildTag: 20260513.5
+-- BuildTag: 20260513.6
 
 AvatarSwitcher = AvatarSwitcher or {}
 
@@ -168,21 +168,23 @@ function AvatarSwitcher:toggleHud()
     self:initialize()
     self:registerHudInputActions()
 
-    if self.HUD == nil or self.HUD.categories == nil then
-        self:rebuildHudLists()
+    -- v0.5.6+: the AvatarSwitcher selector now uses a native GIANTS/FS25
+    -- dialog instead of a raw drawFilledRect HUD. This gives us the same
+    -- fullscreen dialog background, three-part panel, SmoothList rows,
+    -- sliders, focus handling and button profiles used by the base game.
+    if self.guiDialog ~= nil then
+        self:closeDialog()
+    elseif self.openDialog ~= nil then
+        self:openDialog()
     end
 
-    self.HUD.visible = not self.HUD.visible
-    if self.HUD.visible then
-        self:rebuildHudLists()
-        self:setHudMouseCursorVisible(true)
-    else
-        self:setHudMouseCursorVisible(false)
-    end
     self:updateHudInputVisibility()
 end
 
 function AvatarSwitcher:closeHud()
+    if self.closeDialog ~= nil and self.guiDialog ~= nil then
+        self:closeDialog()
+    end
     if self.HUD ~= nil and self.HUD.visible then
         self.HUD.visible = false
         self.HUD.deleteConfirm = false
@@ -309,10 +311,48 @@ function AvatarSwitcher:onHudCloseInput(actionName, inputValue, callbackState, i
     self:closeHud()
 end
 
+local AS_STYLE = {
+    scrim = {0.0, 0.0, 0.0, 0.44},
+    shadow = {0.0, 0.0, 0.0, 0.62},
+    panel = {0.030, 0.033, 0.036, 0.97},
+    panelTop = {0.060, 0.066, 0.072, 0.98},
+    panelInner = {0.050, 0.055, 0.060, 0.96},
+    field = {0.015, 0.017, 0.019, 0.96},
+    fieldBorder = {0.135, 0.145, 0.150, 1.00},
+    border = {0.165, 0.172, 0.178, 1.00},
+    accent = {0.560, 0.720, 0.260, 1.00},
+    accentSoft = {0.230, 0.330, 0.120, 0.92},
+    button = {0.095, 0.102, 0.108, 0.98},
+    buttonBorder = {0.220, 0.230, 0.235, 1.00},
+    buttonPrimary = {0.170, 0.270, 0.090, 0.98},
+    buttonDanger = {0.290, 0.085, 0.070, 0.98},
+    text = {0.96, 0.96, 0.92, 1.00},
+    muted = {0.70, 0.72, 0.70, 1.00},
+    label = {0.82, 0.84, 0.82, 1.00},
+    warning = {1.00, 0.78, 0.42, 1.00}
+}
+
+local function AS_col(name)
+    local c = AS_STYLE[name] or AS_STYLE.text
+    return c[1], c[2], c[3], c[4]
+end
+
 local function AS_drawRect(x, y, w, h, r, g, b, a)
     if drawFilledRect ~= nil then
         pcall(drawFilledRect, x, y, w, h, r, g, b, a)
     end
+end
+
+local function AS_drawStyleRect(x, y, w, h, styleName)
+    AS_drawRect(x, y, w, h, AS_col(styleName))
+end
+
+local function AS_drawBorder(x, y, w, h, thickness, styleName)
+    thickness = thickness or 0.002
+    AS_drawStyleRect(x, y + h - thickness, w, thickness, styleName or "border")
+    AS_drawStyleRect(x, y, w, thickness, styleName or "border")
+    AS_drawStyleRect(x, y, thickness, h, styleName or "border")
+    AS_drawStyleRect(x + w - thickness, y, thickness, h, styleName or "border")
 end
 
 local function AS_drawText(x, y, size, text, r, g, b, a)
@@ -327,8 +367,22 @@ local function AS_drawText(x, y, size, text, r, g, b, a)
     end
 end
 
+local function AS_drawTextStyle(x, y, size, text, styleName)
+    AS_drawText(x, y, size, text, AS_col(styleName or "text"))
+end
+
 local function AS_pointInRect(px, py, rect)
     return rect ~= nil and px >= rect.x and px <= rect.x + rect.w and py >= rect.y and py <= rect.y + rect.h
+end
+
+local function AS_drawField(x, y, w, h, label, value, subText)
+    AS_drawStyleRect(x, y, w, h, "field")
+    AS_drawBorder(x, y, w, h, 0.0015, "fieldBorder")
+    AS_drawTextStyle(x + 0.010, y + h - 0.021, 0.0125, tostring(label or ""), "muted")
+    AS_drawTextStyle(x + 0.010, y + 0.020, 0.0160, tostring(value or ""), "text")
+    if subText ~= nil and subText ~= "" then
+        AS_drawTextStyle(x + 0.010, y + 0.006, 0.0108, tostring(subText), "muted")
+    end
 end
 
 function AvatarSwitcher:setHudMouseCursorVisible(visible)
@@ -337,12 +391,29 @@ function AvatarSwitcher:setHudMouseCursorVisible(visible)
     end
 end
 
-function AvatarSwitcher:addHudButton(id, label, x, y, w, h)
+function AvatarSwitcher:addHudButton(id, label, x, y, w, h, style)
     self.HUD.buttons = self.HUD.buttons or {}
     local rect = { id = id, label = label, x = x, y = y, w = w, h = h }
     table.insert(self.HUD.buttons, rect)
-    AS_drawRect(x, y, w, h, 0.12, 0.12, 0.12, 0.88)
-    AS_drawText(x + 0.006, y + h * 0.32, 0.014, label, 1, 1, 1, 1)
+
+    style = style or "normal"
+    local fill = "button"
+    local border = "buttonBorder"
+    if style == "primary" then
+        fill = "buttonPrimary"
+        border = "accent"
+    elseif style == "danger" then
+        fill = "buttonDanger"
+        border = "warning"
+    elseif style == "nav" then
+        fill = "panelInner"
+        border = "fieldBorder"
+    end
+
+    AS_drawStyleRect(x, y, w, h, fill)
+    AS_drawStyleRect(x, y + h - 0.003, w, 0.003, border)
+    AS_drawBorder(x, y, w, h, 0.0014, border)
+    AS_drawTextStyle(x + 0.008, y + h * 0.32, 0.0132, label, "text")
 end
 
 function AvatarSwitcher:handleHudButton(id)
@@ -368,6 +439,9 @@ function AvatarSwitcher:handleHudButton(id)
 end
 
 function AvatarSwitcher:mouseEvent(posX, posY, isDown, isUp, button)
+    if self.useLegacyRawHud ~= true then
+        return false
+    end
     if self.HUD == nil or self.HUD.visible ~= true then
         return false
     end
@@ -456,29 +530,26 @@ function AvatarSwitcher:drawHudDeleteConfirm(x, y, w)
         return
     end
 
-    -- Opaque modal treatment. The full-screen scrim makes the confirmation readable
-    -- over bright menus/scenery and visually communicates that clicks are captured.
-    AS_drawRect(0, 0, 1, 1, 0, 0, 0, 0.62)
+    AS_drawRect(0, 0, 1, 1, 0, 0, 0, 0.70)
 
-    local boxX = x + 0.034
-    local boxY = y + 0.116
-    local boxW = w - 0.080
-    local boxH = 0.128
+    local boxW = 0.360
+    local boxH = 0.170
+    local boxX = 0.5 - (boxW * 0.5)
+    local boxY = 0.5 - (boxH * 0.5)
 
-    -- Draw a small shadow and fully opaque panel. Some FS GUI paths blend very
-    -- lightly, so the duplicate black layers help keep text legible.
-    AS_drawRect(boxX - 0.006, boxY - 0.006, boxW + 0.012, boxH + 0.012, 0, 0, 0, 0.85)
-    AS_drawRect(boxX, boxY, boxW, boxH, 0.015, 0.015, 0.015, 1.00)
-    AS_drawRect(boxX, boxY + boxH - 0.004, boxW, 0.004, 0.95, 0.62, 0.30, 1.00)
+    AS_drawStyleRect(boxX - 0.008, boxY - 0.010, boxW + 0.016, boxH + 0.020, "shadow")
+    AS_drawStyleRect(boxX, boxY, boxW, boxH, "panel")
+    AS_drawStyleRect(boxX, boxY + boxH - 0.034, boxW, 0.034, "panelTop")
+    AS_drawStyleRect(boxX, boxY + boxH - 0.005, boxW, 0.005, "accent")
+    AS_drawBorder(boxX, boxY, boxW, boxH, 0.0018, "border")
 
-    AS_drawText(boxX + 0.012, boxY + 0.094, 0.0155, "Delete this appearance?", 1, 1, 1, 1)
-    AS_drawText(boxX + 0.012, boxY + 0.067, 0.0135, tostring(preset.name or preset.id), 0.95, 0.88, 0.72, 1)
-    AS_drawText(boxX + 0.012, boxY + 0.044, 0.0118, "This removes it from avatarPresets.xml.", 0.86, 0.86, 0.86, 1)
+    AS_drawTextStyle(boxX + 0.018, boxY + boxH - 0.025, 0.0165, "Delete appearance", "text")
+    AS_drawTextStyle(boxX + 0.018, boxY + 0.092, 0.0138, "This will remove the selected AvatarSwitcher preset.", "label")
+    AS_drawTextStyle(boxX + 0.018, boxY + 0.066, 0.0145, tostring(preset.name or preset.id), "warning")
+    AS_drawTextStyle(boxX + 0.018, boxY + 0.046, 0.0118, "The current in-game appearance will not be changed.", "muted")
 
-    -- Place modal buttons away from the underlying HUD button row to avoid any
-    -- accidental overlap if another mod changes draw/click order.
-    self:addHudButton("deleteConfirm", "Delete", boxX + boxW - 0.176, boxY + 0.012, 0.078, 0.032)
-    self:addHudButton("deleteCancel", "Cancel", boxX + boxW - 0.088, boxY + 0.012, 0.078, 0.032)
+    self:addHudButton("deleteConfirm", "Delete", boxX + boxW - 0.184, boxY + 0.014, 0.082, 0.034, "danger")
+    self:addHudButton("deleteCancel", "Cancel", boxX + boxW - 0.092, boxY + 0.014, 0.082, 0.034, "normal")
 end
 
 function AvatarSwitcher:update(dt)
@@ -486,6 +557,11 @@ function AvatarSwitcher:update(dt)
 end
 
 function AvatarSwitcher:draw()
+    -- Native dialog mode is now the primary UI. Keep the legacy raw HUD draw
+    -- code below as a dormant fallback only.
+    if self.useLegacyRawHud ~= true then
+        return
+    end
     if self.HUD == nil or not self.HUD.visible then
         return
     end
@@ -497,36 +573,50 @@ function AvatarSwitcher:draw()
     local presetId = preset ~= nil and tostring(preset.id or "") or "-"
     local presetCount = #(self.HUD.filteredPresets or {})
 
-    local x = 0.32
-    local y = 0.70
-    local w = 0.40
-    local h = 0.285
+    local x = 0.300
+    local y = 0.615
+    local w = 0.430
+    local h = 0.330
     self.HUD.buttons = {}
 
-    AS_drawRect(x - 0.012, y - 0.020, w, h, 0, 0, 0, 0.78)
-    AS_drawText(x, y + 0.230, 0.021, "Avatar Switcher", 1, 1, 1, 1)
+    AS_drawStyleRect(0, 0, 1, 1, "scrim")
+    AS_drawStyleRect(x - 0.010, y - 0.012, w + 0.020, h + 0.024, "shadow")
+    AS_drawStyleRect(x, y, w, h, "panel")
+    AS_drawBorder(x, y, w, h, 0.0018, "border")
 
-    AS_drawText(x, y + 0.191, 0.016, "Category:", 0.9, 0.9, 0.9, 1)
-    self:addHudButton("catPrev", "<", x + 0.095, y + 0.182, 0.032, 0.030)
-    AS_drawText(x + 0.140, y + 0.191, 0.016, tostring(category), 1, 1, 1, 1)
-    self:addHudButton("catNext", ">", x + 0.335, y + 0.182, 0.032, 0.030)
+    local headerH = 0.052
+    AS_drawStyleRect(x, y + h - headerH, w, headerH, "panelTop")
+    AS_drawStyleRect(x, y + h - 0.006, w, 0.006, "accent")
+    AS_drawTextStyle(x + 0.018, y + h - 0.034, 0.0205, "Avatar Switcher", "text")
+    AS_drawTextStyle(x + 0.018, y + h - 0.050, 0.0118, "Saved player appearances", "muted")
 
-    AS_drawText(x, y + 0.145, 0.016, "Preset:", 0.9, 0.9, 0.9, 1)
-    self:addHudButton("presetPrev", "<", x + 0.095, y + 0.136, 0.032, 0.030)
-    AS_drawText(x + 0.140, y + 0.145, 0.016, presetName, 1, 1, 1, 1)
-    self:addHudButton("presetNext", ">", x + 0.335, y + 0.136, 0.032, 0.030)
+    local contentX = x + 0.018
+    local contentW = w - 0.036
+    local rowH = 0.064
+    local navW = 0.034
+    local valueW = contentW - (navW * 2) - 0.016
 
-    AS_drawText(x, y + 0.105, 0.014, "ID: " .. presetId .. "    " .. tostring(self.HUD.presetIndex or 0) .. "/" .. tostring(presetCount), 0.85, 0.85, 0.85, 1)
+    local catY = y + 0.196
+    AS_drawField(contentX + navW + 0.008, catY, valueW, rowH, "Category", tostring(category), tostring(self.HUD.categoryIndex or 0) .. "/" .. tostring(#categories))
+    self:addHudButton("catPrev", "<", contentX, catY + 0.015, navW, 0.034, "nav")
+    self:addHudButton("catNext", ">", contentX + navW + 0.008 + valueW + 0.008, catY + 0.015, navW, 0.034, "nav")
 
-    self:addHudButton("apply", "Apply Preset", x, y + 0.055, 0.132, 0.034)
-    self:addHudButton("delete", "Delete", x + 0.146, y + 0.055, 0.090, 0.034)
-    self:addHudButton("close", "Close", x + 0.252, y + 0.055, 0.085, 0.034)
+    local presetY = y + 0.116
+    AS_drawField(contentX + navW + 0.008, presetY, valueW, rowH, "Appearance", presetName, "ID: " .. presetId .. "     " .. tostring(self.HUD.presetIndex or 0) .. "/" .. tostring(presetCount))
+    self:addHudButton("presetPrev", "<", contentX, presetY + 0.015, navW, 0.034, "nav")
+    self:addHudButton("presetNext", ">", contentX + navW + 0.008 + valueW + 0.008, presetY + 0.015, navW, 0.034, "nav")
+
+    local buttonY = y + 0.054
+    self:addHudButton("apply", "Apply", contentX, buttonY, 0.102, 0.038, "primary")
+    self:addHudButton("delete", "Delete", contentX + 0.116, buttonY, 0.088, 0.038, "danger")
+    self:addHudButton("close", "Close", contentX + contentW - 0.088, buttonY, 0.088, 0.038, "normal")
+
+    AS_drawStyleRect(x, y, w, 0.032, "panelInner")
+    AS_drawTextStyle(contentX, y + 0.010, 0.0108, "Use the mapped Open Avatar Switcher control, then select with the mouse.", "muted")
 
     if self.HUD.deleteConfirm == true then
         self:drawHudDeleteConfirm(x, y, w)
     end
-
-    AS_drawText(x, y + 0.020, 0.012, "Open with asHud or map ASZ_HUD. Use mouse buttons to select/apply/delete.", 0.78, 0.78, 0.78, 1)
 
     if setTextColor ~= nil then
         pcall(setTextColor, 1, 1, 1, 1)

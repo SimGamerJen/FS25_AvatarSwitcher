@@ -1,5 +1,5 @@
 -- FS25_AvatarSwitcher
--- ModVersion: 0.5.3-alpha
+-- ModVersion: 0.6.0-beta
 -- File: AS_InputEvents.lua
 -- BuildTag: 20260513.1
 -- HelperProfiles-style duplicate-safe input registration for player and vehicle contexts.
