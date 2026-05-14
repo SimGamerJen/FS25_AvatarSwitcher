@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="107" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://validation.gdn.giants-software.com/xml/fs25/modDesc.xsd">
-    <author>SimGamerJen / ChatGPT</author>
+    <author>SimGamerJen</author>
     <version>0.6.0.0</version>
     <title>
         <en>Avatar Switcher</en>
