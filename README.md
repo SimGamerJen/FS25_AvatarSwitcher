@@ -36,6 +36,9 @@ Documents\My Games\FarmingSimulator2025\mods
 
 1. Open the FS25 Wardrobe screen.
 2. Use the bottom-row **SAVE** button added by AvatarSwitcher.
+
+<img width="2428" height="322" alt="image" src="https://github.com/user-attachments/assets/29e1458b-2dcc-40dc-b7c6-abfc60f3c2f2" />
+
 3. Enter:
    - **Preset ID** — internal identifier, for example `jen_winter1`.
    - **Description** — display name, for example `Jen - Winter Gear`.
@@ -52,6 +55,8 @@ Documents\My Games\FarmingSimulator2025\mods
 4. Click **APPLY**.
 
 <img width="2317" height="1262" alt="avatar_switcher_screen" src="https://github.com/user-attachments/assets/b02fa1b9-9bbc-4e85-82d1-b72dac9538b4" />
+
+<img width="1613" height="1175" alt="avatar_switcher_appearance_changes_without_wardrobe" src="https://github.com/user-attachments/assets/c47e9171-8955-41ac-a75d-a6f5cb45ab58" />
 
 ### Delete an appearance
 
