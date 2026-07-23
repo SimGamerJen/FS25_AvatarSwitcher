@@ -1,5 +1,5 @@
 -- FS25_AvatarSwitcher
--- ModVersion: 0.6.0-beta
+-- ModVersion: 1.0.0.1
 -- File: AS_Dialog.lua
 -- BuildTag: 20260514.3
 -- FS25-native GUI dialog for selecting, applying and deleting AvatarSwitcher presets.
@@ -20,15 +20,15 @@ function AvatarSwitcherDialog.new(target, custom_mt)
 end
 
 local function ASD_toDisplayCategory(category)
-    category = tostring(category or "general")
-    if category == "all" then
-        return "All"
+    if AvatarSwitcher ~= nil and AvatarSwitcher.getCategoryDisplayName ~= nil then
+        return AvatarSwitcher:getCategoryDisplayName(category)
     end
-    return category
+    return tostring(category or "general")
 end
 
 function AvatarSwitcherDialog:onGuiSetupFinished()
     AvatarSwitcherDialog:superClass().onGuiSetupFinished(self)
+    self:updateLocalizedTexts()
 
     if self.categoryTable ~= nil then
         self.categoryTable:setDataSource(self)
@@ -44,8 +44,28 @@ function AvatarSwitcherDialog:onCreate()
     AvatarSwitcherDialog:superClass().onCreate(self)
 end
 
+function AvatarSwitcherDialog:updateLocalizedTexts()
+    local mod = self.avatarSwitcher or AvatarSwitcher
+    if mod == nil or mod.getText == nil then return end
+
+    local function setText(element, key, fallback)
+        if element ~= nil and type(element.setText) == "function" then
+            element:setText(mod:getText(key, fallback))
+        end
+    end
+
+    setText(self.dialogTitleElement, "as_title", "Avatar Switcher")
+    setText(self.categoryHeaderText, "as_category", "Category")
+    setText(self.appearanceHeaderText, "as_appearance", "Appearance")
+    setText(self.presetIdHeaderText, "as_preset_id", "Preset ID")
+    setText(self.closeButton, "as_close", "Close")
+    setText(self.applyButton, "as_apply", "Apply")
+    setText(self.deleteButton, "as_delete", "Delete")
+end
+
 function AvatarSwitcherDialog:onOpen()
     AvatarSwitcherDialog:superClass().onOpen(self)
+    self:updateLocalizedTexts()
     self:reloadData()
 
     if FocusManager ~= nil and self.categoryTable ~= nil then
@@ -163,10 +183,10 @@ function AvatarSwitcherDialog:updateDetailText()
     if self.detailText == nil then return end
     local preset = self:getSelectedPreset()
     if preset == nil then
-        self.detailText:setText("No saved appearances in this category.")
+        self.detailText:setText((self.avatarSwitcher or AvatarSwitcher):getText("as_no_saved_appearances", "No saved appearances in this category."))
         return
     end
-    self.detailText:setText(string.format("Selected: %s   |   ID: %s   |   Category: %s", tostring(preset.name or preset.id), tostring(preset.id), tostring(preset.category or "general")))
+    self.detailText:setText((self.avatarSwitcher or AvatarSwitcher):formatText("as_selected_details", "Selected: %s   |   ID: %s   |   Category: %s", tostring(preset.name or preset.id), tostring(preset.id), ASD_toDisplayCategory(preset.category or "general")))
 end
 
 function AvatarSwitcherDialog:onClickBack(sender)
@@ -210,8 +230,8 @@ function AvatarSwitcherDialog:onClickDelete(sender)
 
     if g_gui ~= nil and g_gui.showYesNoDialog ~= nil then
         g_gui:showYesNoDialog({
-            text = string.format("Delete AvatarSwitcher preset '%s'?", presetName),
-            title = "Delete Appearance",
+            text = AvatarSwitcher:formatText("as_delete_preset_question", "Delete AvatarSwitcher preset '%s'?", presetName),
+            title = AvatarSwitcher:getText("as_delete_appearance", "Delete Appearance"),
             callback = doDelete
         })
     else

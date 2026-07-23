@@ -1,5 +1,5 @@
 -- FS25_AvatarSwitcher
--- ModVersion: 0.6.0-beta
+-- ModVersion: 1.0.0.1
 -- File: AS_InputEvents.lua
 -- BuildTag: 20260513.1
 -- HelperProfiles-style duplicate-safe input registration for player and vehicle contexts.
@@ -38,6 +38,9 @@ local function AS_setActionEventLowPriority(id, visible)
     if id == nil or g_inputBinding == nil then return end
     if g_inputBinding.setActionEventTextPriority ~= nil then
         pcall(g_inputBinding.setActionEventTextPriority, g_inputBinding, id, GS_PRIO_VERY_LOW)
+    end
+    if g_inputBinding.setActionEventText ~= nil and AvatarSwitcher ~= nil and AvatarSwitcher.getText ~= nil then
+        pcall(g_inputBinding.setActionEventText, g_inputBinding, id, AvatarSwitcher:getText("input_ASZ_HUD", "Open Avatar Switcher"))
     end
     if g_inputBinding.setActionEventTextVisibility ~= nil then
         pcall(g_inputBinding.setActionEventTextVisibility, g_inputBinding, id, visible ~= false)

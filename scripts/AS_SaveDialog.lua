@@ -1,5 +1,5 @@
 -- FS25_AvatarSwitcher
--- ModVersion: 0.6.0-beta
+-- ModVersion: 1.0.0.1
 -- File: AS_SaveDialog.lua
 -- BuildTag: 20260514.11
 -- FS25-native GUI dialog for saving the current Wardrobe appearance as an AvatarSwitcher preset.
@@ -14,7 +14,7 @@ function AvatarSwitcherSaveDialog.new(target, custom_mt)
     self.avatarSwitcher = AvatarSwitcher
     self.fields = { id = "", description = "", category = "custom" }
     self.focus = "id"
-    self.message = "Enter an ID, description and category for the current wardrobe appearance."
+    self.message = AvatarSwitcher:getText("as_save_instructions", "Enter an ID, description and category for the current wardrobe appearance.")
     return self
 end
 
@@ -38,6 +38,7 @@ end
 
 function AvatarSwitcherSaveDialog:onGuiSetupFinished()
     AvatarSwitcherSaveDialog:superClass().onGuiSetupFinished(self)
+    self:updateLocalizedTexts()
     self:updateFieldTexts()
 end
 
@@ -45,11 +46,30 @@ function AvatarSwitcherSaveDialog:onCreate()
     AvatarSwitcherSaveDialog:superClass().onCreate(self)
 end
 
+function AvatarSwitcherSaveDialog:updateLocalizedTexts()
+    local mod = self.avatarSwitcher or AvatarSwitcher
+    if mod == nil or mod.getText == nil then return end
+
+    local function setText(element, key, fallback)
+        if element ~= nil and type(element.setText) == "function" then
+            element:setText(mod:getText(key, fallback))
+        end
+    end
+
+    setText(self.dialogTitleElement, "as_save_avatar", "Save Avatar")
+    setText(self.presetIdHeaderText, "as_preset_id", "Preset ID")
+    setText(self.descriptionHeaderText, "as_description", "Description")
+    setText(self.categoryHeaderText, "as_category", "Category")
+    setText(self.cancelButton, "as_cancel", "Cancel")
+    setText(self.saveButton, "as_save", "Save")
+end
+
 function AvatarSwitcherSaveDialog:onOpen()
     AvatarSwitcherSaveDialog:superClass().onOpen(self)
+    self:updateLocalizedTexts()
     self.fields = { id = "", description = "", category = "custom" }
     self.focus = "id"
-    self.message = "Enter an ID, description and category for the current wardrobe appearance."
+    self.message = AvatarSwitcher:getText("as_save_instructions", "Enter an ID, description and category for the current wardrobe appearance.")
     self:updateFieldTexts()
 
     if AvatarSwitcher ~= nil and AvatarSwitcher.Wardrobe ~= nil then
@@ -90,6 +110,8 @@ function AvatarSwitcherSaveDialog:getFieldDisplay(field, label)
         if clean ~= value and clean ~= "" then
             value = value .. "  →  " .. clean
         end
+    elseif field == "category" and AvatarSwitcher ~= nil and AvatarSwitcher.getCategoryDisplayName ~= nil then
+        value = AvatarSwitcher:getCategoryDisplayName(value)
     end
     local caret = self.focus == field and "  |" or ""
     if value == "" then
@@ -99,9 +121,9 @@ function AvatarSwitcherSaveDialog:getFieldDisplay(field, label)
 end
 
 function AvatarSwitcherSaveDialog:updateFieldTexts()
-    if self.idField ~= nil then self.idField:setText(self:getFieldDisplay("id", "Preset ID")) end
-    if self.descriptionField ~= nil then self.descriptionField:setText(self:getFieldDisplay("description", "Description")) end
-    if self.categoryField ~= nil then self.categoryField:setText(self:getFieldDisplay("category", "Category")) end
+    if self.idField ~= nil then self.idField:setText(self:getFieldDisplay("id", AvatarSwitcher:getText("as_preset_id", "Preset ID"))) end
+    if self.descriptionField ~= nil then self.descriptionField:setText(self:getFieldDisplay("description", AvatarSwitcher:getText("as_description", "Description"))) end
+    if self.categoryField ~= nil then self.categoryField:setText(self:getFieldDisplay("category", AvatarSwitcher:getText("as_category", "Category"))) end
     if self.messageText ~= nil then self.messageText:setText(tostring(self.message or "")) end
 end
 
@@ -123,13 +145,13 @@ end
 
 function AvatarSwitcherSaveDialog:onClickSave()
     if AvatarSwitcher == nil or AvatarSwitcher.saveWardrobePreset == nil then
-        self.message = "AvatarSwitcher is not ready."
+        self.message = AvatarSwitcher:getText("as_not_ready", "AvatarSwitcher is not ready.")
         self:updateFieldTexts()
         return
     end
 
     local ok, msg = AvatarSwitcher:saveWardrobePreset(self.fields.id, self.fields.description, self.fields.category)
-    self.message = tostring(msg or (ok and "Saved." or "Save failed."))
+    self.message = tostring(msg or (ok and AvatarSwitcher:getText("as_saved", "Saved.") or AvatarSwitcher:getText("as_save_failed", "Save failed.")))
     self:updateFieldTexts()
 
     if ok then

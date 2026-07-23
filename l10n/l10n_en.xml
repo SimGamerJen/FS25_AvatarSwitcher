@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+    <texts>
+        <text name="input_ASZ_HUD" text="Open Avatar Switcher" />
+        <text name="as_title" text="Avatar Switcher" />
+        <text name="as_save_avatar" text="Save Avatar" />
+        <text name="as_saved_player_appearances" text="Saved player appearances" />
+        <text name="as_category" text="Category" />
+        <text name="as_appearance" text="Appearance" />
+        <text name="as_preset_id" text="Preset ID" />
+        <text name="as_description" text="Description" />
+        <text name="as_category_all" text="All" />
+        <text name="as_category_general" text="General" />
+        <text name="as_category_custom" text="Custom" />
+        <text name="as_select_saved_appearance" text="Select a saved appearance to apply or delete." />
+        <text name="as_no_saved_appearances" text="No saved appearances in this category." />
+        <text name="as_selected_details" text="Selected: %s   |   ID: %s   |   Category: %s" />
+        <text name="as_close" text="Close" />
+        <text name="as_apply" text="Apply" />
+        <text name="as_delete" text="Delete" />
+        <text name="as_cancel" text="Cancel" />
+        <text name="as_save" text="Save" />
+        <text name="as_delete_appearance" text="Delete Appearance" />
+        <text name="as_delete_preset_question" text="Delete AvatarSwitcher preset '%s'?" />
+        <text name="as_save_instructions" text="Enter an ID, description and category for the current wardrobe appearance." />
+        <text name="as_not_ready" text="AvatarSwitcher is not ready." />
+        <text name="as_saved" text="Saved." />
+        <text name="as_save_failed" text="Save failed." />
+        <text name="as_id_required" text="ID is required." />
+        <text name="as_preset_exists" text="Preset ID already exists: %s" />
+        <text name="as_capture_failed" text="Could not capture current wardrobe appearance." />
+        <text name="as_saved_preset" text="Saved preset: %s" />
+        <text name="as_save_current_appearance" text="Save current wardrobe appearance" />
+        <text name="as_save_to_avatar_switcher" text="Save to AvatarSwitcher" />
+        <text name="as_tip_ids" text="Tip: IDs are stored without spaces; the description is shown in the selector." />
+        <text name="as_save_failed_not_ready" text="Save failed: AvatarSwitcher is not ready." />
+        <text name="as_delete_confirm_body" text="This will remove the selected AvatarSwitcher preset." />
+        <text name="as_delete_current_unchanged" text="The current in-game appearance will not be changed." />
+        <text name="as_no_presets_found" text="No presets found" />
+        <text name="as_hud_hint" text="Use the mapped Open Avatar Switcher control, then select with the mouse." />
+        <text name="as_notify_switched" text="Avatar switched: %s" />
+        <text name="as_notify_saved" text="Avatar preset saved: %s" />
+        <text name="as_notify_deleted" text="Avatar preset deleted: %s" />
+        <text name="as_notify_reloaded" text="Avatar presets reloaded" />
+        <text name="as_preset_not_found" text="Preset not found: %s" />
+    </texts>
+</l10n>

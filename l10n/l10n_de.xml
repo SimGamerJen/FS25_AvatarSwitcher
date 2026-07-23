@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+    <texts>
+        <text name="input_ASZ_HUD" text="Avatar-Wechsler öffnen" />
+        <text name="as_title" text="Avatar-Wechsler" />
+        <text name="as_save_avatar" text="Avatar speichern" />
+        <text name="as_saved_player_appearances" text="Gespeicherte Spieler-Erscheinungsbilder" />
+        <text name="as_category" text="Kategorie" />
+        <text name="as_appearance" text="Erscheinungsbild" />
+        <text name="as_preset_id" text="Preset-ID" />
+        <text name="as_description" text="Beschreibung" />
+        <text name="as_category_all" text="Alle" />
+        <text name="as_category_general" text="Allgemein" />
+        <text name="as_category_custom" text="Benutzerdefiniert" />
+        <text name="as_select_saved_appearance" text="Wähle ein gespeichertes Erscheinungsbild zum Anwenden oder Löschen aus." />
+        <text name="as_no_saved_appearances" text="Keine gespeicherten Erscheinungsbilder in dieser Kategorie." />
+        <text name="as_selected_details" text="Ausgewählt: %s   |   ID: %s   |   Kategorie: %s" />
+        <text name="as_close" text="Schließen" />
+        <text name="as_apply" text="Anwenden" />
+        <text name="as_delete" text="Löschen" />
+        <text name="as_cancel" text="Abbrechen" />
+        <text name="as_save" text="Speichern" />
+        <text name="as_delete_appearance" text="Erscheinungsbild löschen" />
+        <text name="as_delete_preset_question" text="AvatarSwitcher-Preset „%s“ löschen?" />
+        <text name="as_save_instructions" text="Gib eine ID, eine Beschreibung und eine Kategorie für das aktuelle Erscheinungsbild ein." />
+        <text name="as_not_ready" text="AvatarSwitcher ist nicht bereit." />
+        <text name="as_saved" text="Gespeichert." />
+        <text name="as_save_failed" text="Speichern fehlgeschlagen." />
+        <text name="as_id_required" text="Eine ID ist erforderlich." />
+        <text name="as_preset_exists" text="Die Preset-ID ist bereits vorhanden: %s" />
+        <text name="as_capture_failed" text="Das aktuelle Erscheinungsbild konnte nicht erfasst werden." />
+        <text name="as_saved_preset" text="Preset gespeichert: %s" />
+        <text name="as_save_current_appearance" text="Aktuelles Erscheinungsbild speichern" />
+        <text name="as_save_to_avatar_switcher" text="In AvatarSwitcher speichern" />
+        <text name="as_tip_ids" text="Tipp: IDs werden ohne Leerzeichen gespeichert; die Beschreibung wird in der Auswahl angezeigt." />
+        <text name="as_save_failed_not_ready" text="Speichern fehlgeschlagen: AvatarSwitcher ist nicht bereit." />
+        <text name="as_delete_confirm_body" text="Das ausgewählte AvatarSwitcher-Preset wird gelöscht." />
+        <text name="as_delete_current_unchanged" text="Das aktuelle Erscheinungsbild im Spiel wird nicht geändert." />
+        <text name="as_no_presets_found" text="Keine Presets gefunden" />
+        <text name="as_hud_hint" text="Verwende die zugewiesene Steuerung „Avatar-Wechsler öffnen“ und wähle dann mit der Maus aus." />
+        <text name="as_notify_switched" text="Avatar gewechselt: %s" />
+        <text name="as_notify_saved" text="Avatar-Preset gespeichert: %s" />
+        <text name="as_notify_deleted" text="Avatar-Preset gelöscht: %s" />
+        <text name="as_notify_reloaded" text="Avatar-Presets neu geladen" />
+        <text name="as_preset_not_found" text="Preset nicht gefunden: %s" />
+    </texts>
+</l10n>

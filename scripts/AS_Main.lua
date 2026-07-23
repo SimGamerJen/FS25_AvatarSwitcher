@@ -1,5 +1,5 @@
 -- FS25_AvatarSwitcher
--- ModVersion: 0.6.0-beta
+-- ModVersion: 1.0.0.1
 -- File: AS_Main.lua
 -- BuildTag: 20260514.3
 
@@ -72,7 +72,7 @@ function AvatarSwitcher:applyPreset(presetId)
 
     local preset = self.presetsById[presetId]
     if preset == nil then
-        self:warn("Preset not found: " .. tostring(presetId))
+        self:warn(self:formatText("as_preset_not_found", "Preset not found: %s", tostring(presetId)))
         return false
     end
 
@@ -88,7 +88,7 @@ function AvatarSwitcher:applyPreset(presetId)
         refreshed = self:tryRefreshActivePlayer(preset.style, false)
     end
 
-    self:notify("Avatar switched: " .. tostring(preset.name))
+    self:notify(self:formatText("as_notify_switched", "Avatar switched: %s", tostring(preset.name)))
 
     if refreshed then
         self:debug("Applied preset with live runtime refresh: " .. tostring(preset.id) .. " (" .. tostring(preset.name) .. ")")
@@ -167,7 +167,7 @@ function AvatarSwitcher:saveCurrentAsPreset(id, ...)
 
     local ok = self:appendPresetToFile(id, displayName, "custom", style)
     if ok then
-        self:notify("Avatar preset saved: " .. tostring(displayName))
+        self:notify(self:formatText("as_notify_saved", "Avatar preset saved: %s", tostring(displayName)))
     end
 
     return ok
@@ -178,7 +178,7 @@ function AvatarSwitcher:deletePreset(presetId)
     self:initialize()
     local ok, deletedName = self:deletePresetFromFile(presetId)
     if ok then
-        self:notify("Avatar preset deleted: " .. tostring(deletedName or presetId))
+        self:notify(self:formatText("as_notify_deleted", "Avatar preset deleted: %s", tostring(deletedName or presetId)))
     end
     return ok
 end
@@ -190,7 +190,7 @@ function AvatarSwitcher:reloadPresets()
         if self.rebuildHudLists ~= nil then
             self:rebuildHudLists()
         end
-        self:notify("Avatar presets reloaded")
+        self:notify(self:getText("as_notify_reloaded", "Avatar presets reloaded"))
     end
     return ok
 end

@@ -1,5 +1,5 @@
 -- FS25_AvatarSwitcher
--- ModVersion: 0.6.0-beta
+-- ModVersion: 1.0.0.1
 -- File: AS_Wardrobe.lua
 -- BuildTag: 20260514.8
 -- Wardrobe integration: injects a small SAVE button while the in-game
@@ -99,7 +99,7 @@ local function ASW_getWardrobeSaveButtonInfo()
         W.nativeSaveButtonInfo = {
             showWhenPaused = true,
             inputAction = action,
-            text = "SAVE",
+            text = AvatarSwitcher:getText("as_save", "Save"),
             callback = function()
                 local wardrobe = AvatarSwitcher ~= nil and AvatarSwitcher.Wardrobe or nil
                 if wardrobe ~= nil and wardrobe.openModal ~= nil then
@@ -116,7 +116,9 @@ local function ASW_buttonInfoLooksLikeSave(buttonInfo)
     if type(buttonInfo) ~= "table" then return false end
     if buttonInfo == ASW_getWardrobeSaveButtonInfo() then return true end
     local text = ASW_lower(buttonInfo.text)
-    return text == "save" or text == "save to avatarswitcher"
+    local localizedSave = ASW_lower(AvatarSwitcher:getText("as_save", "Save"))
+    local localizedSaveTo = ASW_lower(AvatarSwitcher:getText("as_save_to_avatar_switcher", "Save to AvatarSwitcher"))
+    return text == "save" or text == "save to avatarswitcher" or text == localizedSave or text == localizedSaveTo
 end
 
 local function ASW_tableContainsButtonInfo(buttonInfos, buttonInfo)
@@ -287,7 +289,7 @@ local function ASW_installEmbeddedWardrobeSaveButton(screen)
         end
     end
 
-    if type(newButton.setText) == "function" then newButton:setText("Save") end
+    if type(newButton.setText) == "function" then newButton:setText(AvatarSwitcher:getText("as_save", "Save")) end
     if type(newButton.setInputAction) == "function" then newButton:setInputAction("MENU_EXTRA_2") end
     if type(newButton.setDisabled) == "function" then newButton:setDisabled(false) end
     if type(newButton.setVisible) == "function" then newButton:setVisible(true) end
@@ -775,24 +777,24 @@ function AvatarSwitcher:saveWardrobePreset(id, description, category)
     description = ASW_trim(description)
     category = ASW_trim(category)
 
-    if id == "" then return false, "ID is required" end
+    if id == "" then return false, self:getText("as_id_required", "ID is required.") end
     if description == "" then description = id end
     if category == "" then category = "custom" end
 
     if self.presetsById ~= nil and self.presetsById[id] ~= nil then
-        return false, "Preset ID already exists: " .. tostring(id)
+        return false, self:formatText("as_preset_exists", "Preset ID already exists: %s", tostring(id))
     end
 
     local style = self:getCurrentStyleForWardrobeSave()
-    if style == nil then return false, "Could not capture current wardrobe appearance" end
+    if style == nil then return false, self:getText("as_capture_failed", "Could not capture current wardrobe appearance.") end
 
     local ok = self:appendPresetToFile(id, description, category, style)
     if ok then
         if self.rebuildHudLists ~= nil then self:rebuildHudLists() end
-        return true, "Saved preset: " .. tostring(description)
+        return true, self:formatText("as_saved_preset", "Saved preset: %s", tostring(description))
     end
 
-    return false, "Preset save failed"
+    return false, self:getText("as_save_failed", "Save failed.")
 end
 
 function AvatarSwitcher.Wardrobe:flash(msg, secs)
@@ -1034,7 +1036,7 @@ function AvatarSwitcher.Wardrobe:openModal()
         self.fields.description = self.fields.description or ""
         self.fields.category = self.fields.category or "custom"
         self:installModalInputBlockers()
-        self:flash("Save current wardrobe appearance", 1.4)
+        self:flash(AvatarSwitcher:getText("as_save_current_appearance", "Save current wardrobe appearance"), 1.4)
     end
 end
 
@@ -1056,7 +1058,7 @@ function AvatarSwitcher.Wardrobe:drawButton()
     self.buttonRect = { id = "openWardrobeSave", x = x, y = y, w = w, h = h }
     ASW_drawRect(x, y, w, h, 0.035, 0.035, 0.04, 0.94)
     ASW_drawRect(x, y + h - 0.002, w, 0.002, 0.72, 0.82, 0.95, 0.62)
-    ASW_text(x + 0.023, y + 0.011, 0.0135, "SAVE", 1, 1, 1, 1)
+    ASW_text(x + 0.023, y + 0.011, 0.0135, AvatarSwitcher:getText("as_save", "Save"), 1, 1, 1, 1)
 end
 
 function AvatarSwitcher.Wardrobe:drawTextField(id, label, x, y, w, h, maxLen)
@@ -1065,8 +1067,12 @@ function AvatarSwitcher.Wardrobe:drawTextField(id, label, x, y, w, h, maxLen)
     ASW_drawRect(x, y, w, h, active and 0.13 or 0.075, active and 0.15 or 0.075, active and 0.19 or 0.08, 0.98)
     ASW_drawRect(x, y + h - 0.002, w, 0.002, 0.72, 0.82, 0.95, active and 0.82 or 0.32)
     local value = self.fields ~= nil and self.fields[id] or ""
+    local displayValue = tostring(value or "")
+    if id == "category" and AvatarSwitcher ~= nil and AvatarSwitcher.getCategoryDisplayName ~= nil then
+        displayValue = AvatarSwitcher:getCategoryDisplayName(displayValue)
+    end
     local caret = active and " |" or ""
-    ASW_text(x + 0.008, y + 0.011, 0.0135, ASW_ellipsize(tostring(value or "") .. caret, maxLen or 46), 1, 1, 1, 1)
+    ASW_text(x + 0.008, y + 0.011, 0.0135, ASW_ellipsize(displayValue .. caret, maxLen or 46), 1, 1, 1, 1)
     self:addRect("field", x, y, w, h, { field = id })
 end
 
@@ -1087,31 +1093,31 @@ function AvatarSwitcher.Wardrobe:drawModal()
     ASW_drawRect(0, 0, 1, 1, 0, 0, 0, 0.68)
     ASW_drawRect(x, y, panelW, panelH, 0.025, 0.025, 0.028, 0.98)
     ASW_drawRect(x, y + panelH - 0.046, panelW, 0.046, 0.08, 0.10, 0.13, 0.99)
-    ASW_text(x + pad, y + panelH - 0.031, 0.017, "Save to AvatarSwitcher", 1, 1, 1, 1)
+    ASW_text(x + pad, y + panelH - 0.031, 0.017, AvatarSwitcher:getText("as_save_to_avatar_switcher", "Save to AvatarSwitcher"), 1, 1, 1, 1)
 
     local fieldX = x + pad
     local fieldW = panelW - pad * 2
     local topY = y + panelH - 0.100
-    self:drawTextField("id", "Preset ID", fieldX, topY, fieldW, 0.037, 52)
-    self:drawTextField("description", "Description", fieldX, topY - 0.074, fieldW, 0.037, 52)
-    self:drawTextField("category", "Category", fieldX, topY - 0.148, fieldW, 0.037, 52)
+    self:drawTextField("id", AvatarSwitcher:getText("as_preset_id", "Preset ID"), fieldX, topY, fieldW, 0.037, 52)
+    self:drawTextField("description", AvatarSwitcher:getText("as_description", "Description"), fieldX, topY - 0.074, fieldW, 0.037, 52)
+    self:drawTextField("category", AvatarSwitcher:getText("as_category", "Category"), fieldX, topY - 0.148, fieldW, 0.037, 52)
 
-    ASW_text(fieldX, y + 0.082, 0.0115, "Tip: IDs are stored without spaces; description is what you see in the picker.", 0.75, 0.80, 0.86, 1)
+    ASW_text(fieldX, y + 0.082, 0.0115, AvatarSwitcher:getText("as_tip_ids", "Tip: IDs are stored without spaces; the description is shown in the selector."), 0.75, 0.80, 0.86, 1)
 
     if self.message ~= nil and self.message ~= "" and (self.messageTime or 0) > 0 then
         ASW_text(fieldX, y + 0.055, 0.0125, self.message, 0.95, 0.88, 0.62, 1)
     end
 
     local by = y + pad
-    self:drawButtonControl("save", "Save", x + panelW - pad - 0.178, by, 0.078, 0.038, true)
-    self:drawButtonControl("cancel", "Cancel", x + panelW - pad - 0.090, by, 0.090, 0.038, true)
+    self:drawButtonControl("save", AvatarSwitcher:getText("as_save", "Save"), x + panelW - pad - 0.178, by, 0.078, 0.038, true)
+    self:drawButtonControl("cancel", AvatarSwitcher:getText("as_cancel", "Cancel"), x + panelW - pad - 0.090, by, 0.090, 0.038, true)
 
     ASW_setTextColor(1, 1, 1, 1)
 end
 
 function AvatarSwitcher.Wardrobe:save()
     if AvatarSwitcher == nil or AvatarSwitcher.saveWardrobePreset == nil then
-        self:flash("Save failed: AvatarSwitcher not ready", 2.5)
+        self:flash(AvatarSwitcher:getText("as_save_failed_not_ready", "Save failed: AvatarSwitcher is not ready."), 2.5)
         return false
     end
     local ok, msg = AvatarSwitcher:saveWardrobePreset(self.fields.id, self.fields.description, self.fields.category)

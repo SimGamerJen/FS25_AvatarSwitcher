@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+    <texts>
+        <text name="input_ASZ_HUD" text="Ouvrir le sélecteur d'avatar" />
+        <text name="as_title" text="Sélecteur d'avatar" />
+        <text name="as_save_avatar" text="Enregistrer l'avatar" />
+        <text name="as_saved_player_appearances" text="Apparences de joueur enregistrées" />
+        <text name="as_category" text="Catégorie" />
+        <text name="as_appearance" text="Apparence" />
+        <text name="as_preset_id" text="ID du préréglage" />
+        <text name="as_description" text="Description" />
+        <text name="as_category_all" text="Toutes" />
+        <text name="as_category_general" text="Général" />
+        <text name="as_category_custom" text="Personnalisé" />
+        <text name="as_select_saved_appearance" text="Sélectionnez une apparence enregistrée à appliquer ou supprimer." />
+        <text name="as_no_saved_appearances" text="Aucune apparence enregistrée dans cette catégorie." />
+        <text name="as_selected_details" text="Sélection : %s   |   ID : %s   |   Catégorie : %s" />
+        <text name="as_close" text="Fermer" />
+        <text name="as_apply" text="Appliquer" />
+        <text name="as_delete" text="Supprimer" />
+        <text name="as_cancel" text="Annuler" />
+        <text name="as_save" text="Enregistrer" />
+        <text name="as_delete_appearance" text="Supprimer l'apparence" />
+        <text name="as_delete_preset_question" text="Supprimer le préréglage AvatarSwitcher « %s » ?" />
+        <text name="as_save_instructions" text="Saisissez un ID, une description et une catégorie pour l'apparence actuelle." />
+        <text name="as_not_ready" text="AvatarSwitcher n'est pas prêt." />
+        <text name="as_saved" text="Enregistré." />
+        <text name="as_save_failed" text="Échec de l'enregistrement." />
+        <text name="as_id_required" text="Un ID est requis." />
+        <text name="as_preset_exists" text="L'ID du préréglage existe déjà : %s" />
+        <text name="as_capture_failed" text="Impossible de capturer l'apparence actuelle." />
+        <text name="as_saved_preset" text="Préréglage enregistré : %s" />
+        <text name="as_save_current_appearance" text="Enregistrer l'apparence actuelle" />
+        <text name="as_save_to_avatar_switcher" text="Enregistrer dans AvatarSwitcher" />
+        <text name="as_tip_ids" text="Astuce : les ID sont enregistrés sans espaces ; la description apparaît dans le sélecteur." />
+        <text name="as_save_failed_not_ready" text="Échec de l'enregistrement : AvatarSwitcher n'est pas prêt." />
+        <text name="as_delete_confirm_body" text="Le préréglage AvatarSwitcher sélectionné sera supprimé." />
+        <text name="as_delete_current_unchanged" text="L'apparence actuelle en jeu ne sera pas modifiée." />
+        <text name="as_no_presets_found" text="Aucun préréglage trouvé" />
+        <text name="as_hud_hint" text="Utilisez la commande « Ouvrir le sélecteur d'avatar », puis sélectionnez avec la souris." />
+        <text name="as_notify_switched" text="Avatar changé : %s" />
+        <text name="as_notify_saved" text="Préréglage d'avatar enregistré : %s" />
+        <text name="as_notify_deleted" text="Préréglage d'avatar supprimé : %s" />
+        <text name="as_notify_reloaded" text="Préréglages d'avatar rechargés" />
+        <text name="as_preset_not_found" text="Préréglage introuvable : %s" />
+    </texts>
+</l10n>

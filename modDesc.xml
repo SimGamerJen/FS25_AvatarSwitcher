@@ -1,15 +1,67 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<modDesc descVersion="107" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://validation.gdn.giants-software.com/xml/fs25/modDesc.xsd">
+<modDesc descVersion="110" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://validation.gdn.giants-software.com/xml/fs25/modDesc.xsd">
     <author>SimGamerJen</author>
-    <version>0.6.0.0</version>
+    <version>1.0.0.1</version>
+
     <title>
         <en>Avatar Switcher</en>
+        <de>Avatar-Wechsler</de>
+        <fr>Sélecteur D'Avatar</fr>
     </title>
+
     <description>
-        <en>Save, manage, and apply player avatar presets in Farming Simulator 25. Includes a native FS25-style AvatarSwitcher picker, embedded Wardrobe SAVE button, XML save dialog, category filtering, preset deletion, and console diagnostics. v0.6.0-beta is the first public beta release candidate.</en>
+        <en><![CDATA[
+Save the current player appearance as a reusable preset and switch between saved avatars from an in-game menu.
+
+Features:
+- Save the current wardrobe appearance as a preset
+- Organize presets by category
+- Apply, reload and delete saved presets
+- Open the selector on foot or while driving
+- Store presets in the Avatar Switcher mod settings folder
+
+This mod is designed for single-player use and does not support multiplayer.
+
+Changelog 1.0.0.1:
+- Added German and French language support
+- Localized menus, dialogs, controls, prompts and notifications
+]]></en>
+        <de><![CDATA[
+Speichere das aktuelle Aussehen des Spielers als wiederverwendbare Voreinstellung und wechsle über ein Menü im Spiel zwischen gespeicherten Avataren.
+
+Funktionen:
+- Aktuelles Garderoben-Aussehen als Voreinstellung speichern
+- Voreinstellungen nach Kategorien ordnen
+- Gespeicherte Voreinstellungen anwenden, neu laden und löschen
+- Auswahl zu Fuß oder während der Fahrt öffnen
+- Voreinstellungen im Mod-Einstellungsordner von Avatar Switcher speichern
+
+Dieser Mod ist für den Einzelspielermodus vorgesehen und unterstützt keinen Mehrspielermodus.
+
+Changelog 1.0.0.1:
+- Deutsche und französische Sprachunterstützung hinzugefügt
+- Menüs, Dialoge, Bedienelemente, Abfragen und Benachrichtigungen lokalisiert
+]]></de>
+        <fr><![CDATA[
+Enregistrez l'apparence actuelle du joueur comme préréglage réutilisable et passez d'un avatar enregistré à un autre depuis un menu en jeu.
+
+Fonctionnalités :
+- Enregistrer l'apparence actuelle de la garde-robe comme préréglage
+- Classer les préréglages par catégorie
+- Appliquer, recharger et supprimer les préréglages enregistrés
+- Ouvrir le sélecteur à pied ou au volant d'un véhicule
+- Stocker les préréglages dans le dossier de paramètres du mod Avatar Switcher
+
+Ce mod est conçu pour le mode solo et ne prend pas en charge le multijoueur.
+
+Changelog 1.0.0.1:
+- Ajout de la prise en charge de l'allemand et du français
+- Localisation des menus, boîtes de dialogue, commandes, confirmations et notifications
+]]></fr>
     </description>
 
-    <iconFilename>icon.dds</iconFilename>
+    <iconFilename>icon_AvatarSwitcher.dds</iconFilename>
+    <multiplayer supported="false" />
 
     <extraSourceFiles>
         <sourceFile filename="scripts/AS_Logger.lua" />
@@ -30,10 +82,5 @@
         <action name="ASZ_HUD" category="MISC" axisType="HALF" />
     </actions>
 
-    <l10n>
-        <text name="input_ASZ_HUD">
-            <en>Open Avatar Switcher</en>
-        </text>
-    </l10n>
-
+    <l10n filenamePrefix="l10n/l10n" />
 </modDesc>

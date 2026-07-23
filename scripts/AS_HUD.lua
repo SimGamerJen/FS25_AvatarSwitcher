@@ -1,5 +1,5 @@
 -- FS25_AvatarSwitcher
--- ModVersion: 0.6.0-beta
+-- ModVersion: 1.0.0.1
 -- File: AS_HUD.lua
 -- BuildTag: 20260513.6
 
@@ -15,7 +15,7 @@ AvatarSwitcher.HUD = AvatarSwitcher.HUD or {
 }
 
 local AS_HUD_ACTIONS = {
-    { name = "ASZ_HUD", callback = "onHudToggleInput", text = "Avatar Switcher", alwaysActive = true }
+    { name = "ASZ_HUD", callback = "onHudToggleInput", textKey = "input_ASZ_HUD", text = "Open Avatar Switcher", alwaysActive = true }
 }
 
 local function AS_mod(value, maxValue)
@@ -61,7 +61,7 @@ local function AS_registerOneInput(mod, actionName, callbackName, text, alwaysAc
 
     if eventId ~= nil then
         if g_inputBinding.setActionEventText ~= nil then
-            pcall(g_inputBinding.setActionEventText, g_inputBinding, eventId, tostring(text or actionName))
+            pcall(g_inputBinding.setActionEventText, g_inputBinding, eventId, mod:getText("input_ASZ_HUD", tostring(text or actionName)))
         end
         if g_inputBinding.setActionEventTextVisibility ~= nil then
             pcall(g_inputBinding.setActionEventTextVisibility, g_inputBinding, eventId, alwaysActive == true)
@@ -543,13 +543,13 @@ function AvatarSwitcher:drawHudDeleteConfirm(x, y, w)
     AS_drawStyleRect(boxX, boxY + boxH - 0.005, boxW, 0.005, "accent")
     AS_drawBorder(boxX, boxY, boxW, boxH, 0.0018, "border")
 
-    AS_drawTextStyle(boxX + 0.018, boxY + boxH - 0.025, 0.0165, "Delete appearance", "text")
-    AS_drawTextStyle(boxX + 0.018, boxY + 0.092, 0.0138, "This will remove the selected AvatarSwitcher preset.", "label")
+    AS_drawTextStyle(boxX + 0.018, boxY + boxH - 0.025, 0.0165, self:getText("as_delete_appearance", "Delete Appearance"), "text")
+    AS_drawTextStyle(boxX + 0.018, boxY + 0.092, 0.0138, self:getText("as_delete_confirm_body", "This will remove the selected AvatarSwitcher preset."), "label")
     AS_drawTextStyle(boxX + 0.018, boxY + 0.066, 0.0145, tostring(preset.name or preset.id), "warning")
-    AS_drawTextStyle(boxX + 0.018, boxY + 0.046, 0.0118, "The current in-game appearance will not be changed.", "muted")
+    AS_drawTextStyle(boxX + 0.018, boxY + 0.046, 0.0118, self:getText("as_delete_current_unchanged", "The current in-game appearance will not be changed."), "muted")
 
-    self:addHudButton("deleteConfirm", "Delete", boxX + boxW - 0.184, boxY + 0.014, 0.082, 0.034, "danger")
-    self:addHudButton("deleteCancel", "Cancel", boxX + boxW - 0.092, boxY + 0.014, 0.082, 0.034, "normal")
+    self:addHudButton("deleteConfirm", self:getText("as_delete", "Delete"), boxX + boxW - 0.184, boxY + 0.014, 0.082, 0.034, "danger")
+    self:addHudButton("deleteCancel", self:getText("as_cancel", "Cancel"), boxX + boxW - 0.092, boxY + 0.014, 0.082, 0.034, "normal")
 end
 
 function AvatarSwitcher:update(dt)
@@ -569,7 +569,7 @@ function AvatarSwitcher:draw()
     local categories = self.HUD.categories or { "all" }
     local category = categories[self.HUD.categoryIndex or 1] or "all"
     local preset = self.HUD.filteredPresets ~= nil and self.HUD.filteredPresets[self.HUD.presetIndex or 1] or nil
-    local presetName = preset ~= nil and tostring(preset.name or preset.id) or "No presets found"
+    local presetName = preset ~= nil and tostring(preset.name or preset.id) or self:getText("as_no_presets_found", "No presets found")
     local presetId = preset ~= nil and tostring(preset.id or "") or "-"
     local presetCount = #(self.HUD.filteredPresets or {})
 
@@ -587,8 +587,8 @@ function AvatarSwitcher:draw()
     local headerH = 0.052
     AS_drawStyleRect(x, y + h - headerH, w, headerH, "panelTop")
     AS_drawStyleRect(x, y + h - 0.006, w, 0.006, "accent")
-    AS_drawTextStyle(x + 0.018, y + h - 0.034, 0.0205, "Avatar Switcher", "text")
-    AS_drawTextStyle(x + 0.018, y + h - 0.050, 0.0118, "Saved player appearances", "muted")
+    AS_drawTextStyle(x + 0.018, y + h - 0.034, 0.0205, self:getText("as_title", "Avatar Switcher"), "text")
+    AS_drawTextStyle(x + 0.018, y + h - 0.050, 0.0118, self:getText("as_saved_player_appearances", "Saved player appearances"), "muted")
 
     local contentX = x + 0.018
     local contentW = w - 0.036
@@ -597,22 +597,22 @@ function AvatarSwitcher:draw()
     local valueW = contentW - (navW * 2) - 0.016
 
     local catY = y + 0.196
-    AS_drawField(contentX + navW + 0.008, catY, valueW, rowH, "Category", tostring(category), tostring(self.HUD.categoryIndex or 0) .. "/" .. tostring(#categories))
+    AS_drawField(contentX + navW + 0.008, catY, valueW, rowH, self:getText("as_category", "Category"), self:getCategoryDisplayName(category), tostring(self.HUD.categoryIndex or 0) .. "/" .. tostring(#categories))
     self:addHudButton("catPrev", "<", contentX, catY + 0.015, navW, 0.034, "nav")
     self:addHudButton("catNext", ">", contentX + navW + 0.008 + valueW + 0.008, catY + 0.015, navW, 0.034, "nav")
 
     local presetY = y + 0.116
-    AS_drawField(contentX + navW + 0.008, presetY, valueW, rowH, "Appearance", presetName, "ID: " .. presetId .. "     " .. tostring(self.HUD.presetIndex or 0) .. "/" .. tostring(presetCount))
+    AS_drawField(contentX + navW + 0.008, presetY, valueW, rowH, self:getText("as_appearance", "Appearance"), presetName, self:getText("as_preset_id", "Preset ID") .. ": " .. presetId .. "     " .. tostring(self.HUD.presetIndex or 0) .. "/" .. tostring(presetCount))
     self:addHudButton("presetPrev", "<", contentX, presetY + 0.015, navW, 0.034, "nav")
     self:addHudButton("presetNext", ">", contentX + navW + 0.008 + valueW + 0.008, presetY + 0.015, navW, 0.034, "nav")
 
     local buttonY = y + 0.054
-    self:addHudButton("apply", "Apply", contentX, buttonY, 0.102, 0.038, "primary")
-    self:addHudButton("delete", "Delete", contentX + 0.116, buttonY, 0.088, 0.038, "danger")
-    self:addHudButton("close", "Close", contentX + contentW - 0.088, buttonY, 0.088, 0.038, "normal")
+    self:addHudButton("apply", self:getText("as_apply", "Apply"), contentX, buttonY, 0.102, 0.038, "primary")
+    self:addHudButton("delete", self:getText("as_delete", "Delete"), contentX + 0.116, buttonY, 0.088, 0.038, "danger")
+    self:addHudButton("close", self:getText("as_close", "Close"), contentX + contentW - 0.088, buttonY, 0.088, 0.038, "normal")
 
     AS_drawStyleRect(x, y, w, 0.032, "panelInner")
-    AS_drawTextStyle(contentX, y + 0.010, 0.0108, "Use the mapped Open Avatar Switcher control, then select with the mouse.", "muted")
+    AS_drawTextStyle(contentX, y + 0.010, 0.0108, self:getText("as_hud_hint", "Use the mapped Open Avatar Switcher control, then select with the mouse."), "muted")
 
     if self.HUD.deleteConfirm == true then
         self:drawHudDeleteConfirm(x, y, w)
