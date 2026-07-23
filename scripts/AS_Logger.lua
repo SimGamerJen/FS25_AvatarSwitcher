@@ -1,10 +1,10 @@
 -- FS25_AvatarSwitcher
--- ModVersion: 1.0.0.1
+-- ModVersion: 1.0.0.0
 -- File: AS_Logger.lua
 
 AvatarSwitcher = AvatarSwitcher or {}
 
-AvatarSwitcher.VERSION = "1.0.0.1"
+AvatarSwitcher.VERSION = "1.0.0.0"
 AvatarSwitcher.MOD_NAME = "AvatarSwitcher"
 AvatarSwitcher.DEBUG = false
 

@@ -1,5 +1,5 @@
 -- FS25_AvatarSwitcher
--- ModVersion: 1.0.0.1
+-- ModVersion: 1.0.0.0
 -- File: AS_Wardrobe.lua
 -- BuildTag: 20260514.8
 -- Wardrobe integration: injects a small SAVE button while the in-game

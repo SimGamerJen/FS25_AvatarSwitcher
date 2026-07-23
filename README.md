@@ -1,144 +1,143 @@
-# FS25 AvatarSwitcher
+# FS25 Avatar Switcher
 
-AvatarSwitcher is a Farming Simulator 25 utility mod for saving, organising, and applying player avatar appearances.
-
-The v0.6.0 beta release introduces the first complete native in-game workflow: a FS25-style AvatarSwitcher picker, category filtering, preset deletion, an embedded Wardrobe **SAVE** button, and a native XML **Save Avatar** dialog.
-
-> **Status:** Beta / pre-release. Core single-player workflows have been tested, but wider mod compatibility and multiplayer behaviour still need community testing.
+**Avatar Switcher** is a Farming Simulator 25 script mod that lets you save the current player appearance as a reusable preset and switch between saved avatars from an in-game selector.
 
 ## Features
 
-- Save the current Wardrobe appearance directly to AvatarSwitcher.
-- Open AvatarSwitcher from the configured input binding.
-- Browse saved appearances by category.
-- Apply saved appearances to the active local player.
-- Delete saved appearances from the AvatarSwitcher picker.
-- Stores presets in XML under the user `modSettings` area.
-- Includes console commands for diagnostics and fallback control.
-- Includes optional integration support for HelperProfiles-style workflows.
+- Save the current wardrobe appearance as an avatar preset.
+- Give each preset a unique ID, display name and category.
+- Filter saved appearances by category.
+- Apply or delete presets through an in-game selector.
+- Open Avatar Switcher while on foot or inside a vehicle.
+- Save directly from the player wardrobe through the **Save to AvatarSwitcher** control.
+- Store presets outside the mod ZIP so they survive mod updates.
+- Refresh preset data without restarting the game.
+- Provide a public API for integration with other mods, including Helper Profiles.
+- English, German and French localisation.
+
+## Compatibility
+
+- Farming Simulator 25
+- Version: **1.0.0.0**
+- Script mod for PC and Mac
+- Single-player only
+- Multiplayer is not supported
+- No additional mods are required
 
 ## Installation
 
 1. Download `FS25_AvatarSwitcher.zip`.
-2. Copy it to your Farming Simulator 25 mods folder.
-3. Enable **Avatar Switcher** when loading your savegame.
-4. Configure the **Open Avatar Switcher** input binding from the FS25 controls menu if needed.
+2. Copy the ZIP file into your Farming Simulator 25 mods folder:
 
-Typical Windows mods folder:
+   ```text
+   Documents/My Games/FarmingSimulator2025/mods
+   ```
 
-```text
-Documents\My Games\FarmingSimulator2025\mods
-```
+3. Enable **Avatar Switcher** when loading your save.
+4. Open the in-game control settings and assign a key or button to **Open Avatar Switcher** if it is not already mapped.
 
-## Basic Usage
+Do not extract the mod ZIP into the mods folder.
 
-### Save an appearance from the Wardrobe
+## Using Avatar Switcher
 
-1. Open the FS25 Wardrobe screen.
-2. Use the bottom-row **SAVE** button added by AvatarSwitcher.
+### Saving an appearance
+
+1. Open the Farming Simulator wardrobe and configure the player appearance.
+2. Select **Save to AvatarSwitcher**.
 3. Enter:
-   - **Preset ID** — internal identifier, for example `jen_winter1`.
-   - **Description** — display name, for example `Jen - Winter Gear`.
-   - **Category** — grouping label, for example `witcombe`, `judithplains`, or `custom`.
-4. Click **SAVE** or press the Enter/Accept action.
+   - **Preset ID** — a unique identifier stored without spaces.
+   - **Description** — the name shown in the selector.
+   - **Category** — used to group related presets.
+4. Select **Save**.
 
-### Apply an appearance
+### Applying an appearance
 
-1. Use the configured **Open Avatar Switcher** input binding.
-2. Select a category on the left.
-3. Select an appearance on the right.
-4. Click **APPLY**.
+1. Use the mapped **Open Avatar Switcher** control.
+2. Select a category.
+3. Select a saved appearance.
+4. Choose **Apply**.
 
-### Delete an appearance
+The selected appearance is written to the player settings and Avatar Switcher attempts to refresh the active player immediately.
 
-1. Open AvatarSwitcher.
-2. Select the saved appearance.
-3. Click **DELETE**.
-4. Confirm the delete prompt.
+### Deleting an appearance
 
-## Suggested Screenshot Locations
+Open the selector, choose the preset and select **Delete**. Deleting a preset does not change the appearance currently in use.
 
-Screenshots are not bundled with the mod ZIP, but the README is prepared for a `docs/images` folder in the GitHub repository.
+## Preset Storage
 
-Recommended files:
+Avatar presets are stored at:
 
 ```text
-docs/images/avatar-switcher-main.png
-docs/images/wardrobe-save-button.png
-docs/images/save-avatar-dialog.png
-docs/images/delete-confirmation.png
-docs/images/debug-console-output.png
+Documents/My Games/FarmingSimulator2025/modSettings/FS25_AvatarSwitcher/avatarPresets.xml
 ```
 
-Suggested README placement:
+On first use, Avatar Switcher creates this file from the included template. The file remains in the `modSettings` folder when the mod ZIP is updated.
 
-- Put `avatar-switcher-main.png` near the top of the README as the hero image.
-- Put `wardrobe-save-button.png` in the “Save an appearance from the Wardrobe” section.
-- Put `save-avatar-dialog.png` immediately after the Wardrobe save instructions.
-- Put `delete-confirmation.png` in the delete section.
-- Put `debug-console-output.png` in the troubleshooting section.
+Before Avatar Switcher first writes an appearance to `gameSettings.xml`, it creates this backup when one does not already exist:
+
+```text
+Documents/My Games/FarmingSimulator2025/gameSettings.avatarSwitcherBackup.xml
+```
 
 ## Console Commands
 
-AvatarSwitcher includes console commands for testing, diagnostics, and fallback control.
+The following commands are available when the developer console is enabled:
 
-| Command | Description |
+| Command | Purpose |
 |---|---|
-| `avatarList [category]` | Lists available presets. Optionally filter by category. |
-| `asList [category]` | Alias for `avatarList`. |
-| `avatarUse <presetId>` | Applies the specified preset by ID. |
-| `asUse <presetId>` | Alias for `avatarUse`. |
-| `avatarCurrent` | Prints the current `gameSettings.xml` `lastPlayerStyle` data detected by AvatarSwitcher. |
-| `asCurrent` | Alias for `avatarCurrent`. |
-| `avatarSaveCurrent <presetId> <display name>` | Saves the current `lastPlayerStyle` as a preset from the console. The Wardrobe SAVE dialog is preferred for normal use. |
-| `asSaveCurrent <presetId> <display name>` | Alias for `avatarSaveCurrent`. |
-| `avatarDelete <presetId>` | Deletes a saved preset by ID. |
-| `asDelete <presetId>` | Alias for `avatarDelete`. |
-| `avatarReload` | Reloads AvatarSwitcher presets from XML. |
-| `asReload` | Alias for `avatarReload`. |
-| `avatarProbe` | Probes runtime player/avatar objects and prints diagnostics. Useful when appearance refresh does not behave as expected. |
-| `asProbe` | Alias for `avatarProbe`. |
-| `avatarRefresh` | Attempts to refresh the active player from the current `gameSettings.xml` style. |
-| `asRefresh` | Alias for `avatarRefresh`. |
-| `avatarHud` | Opens/toggles the AvatarSwitcher interface. Retained for compatibility with the earlier HUD naming. |
-| `asHud` | Alias for `avatarHud`. |
-| `avatarHudNext` | Moves the AvatarSwitcher selection to the next preset. |
-| `asHudNext` | Alias for `avatarHudNext`. |
-| `avatarHudPrev` | Moves the AvatarSwitcher selection to the previous preset. |
-| `asHudPrev` | Alias for `avatarHudPrev`. |
-| `avatarHudApply` | Applies the currently selected AvatarSwitcher preset. |
-| `asHudApply` | Alias for `avatarHudApply`. |
-| `avatarHudDebug` | Prints AvatarSwitcher interface diagnostics. |
-| `asHudDebug` | Alias for `avatarHudDebug`. |
-| `avatarInputDebug` | Prints input/action-event diagnostics. Use this if the AvatarSwitcher input binding does not work. |
-| `asInputDebug` | Alias for `avatarInputDebug`. |
-| `avatarMenuDebug` | Prints legacy in-game menu diagnostics. Mostly retained for compatibility after moving to the native dialog workflow. |
-| `asMenuDebug` | Alias for `avatarMenuDebug`. |
-| `avatarWardrobeDebug` | Prints Wardrobe integration diagnostics, including embedded SAVE button state and XML save-dialog availability. |
-| `asWardrobeDebug` | Alias for `avatarWardrobeDebug`. |
+| `avatarList [category]` | List saved presets, optionally filtered by category. |
+| `avatarUse <presetId>` | Apply a preset. |
+| `avatarCurrent` | Show the current player style stored in `gameSettings.xml`. |
+| `avatarSaveCurrent <presetId> <display name>` | Save the current player style as a custom preset. |
+| `avatarDelete <presetId>` | Delete a preset. |
+| `avatarReload` | Reload presets from XML. |
+| `avatarRefresh` | Attempt a live refresh of the active player. |
+| `avatarHud` | Open or close Avatar Switcher. |
+| `avatarProbe` | Print runtime avatar diagnostics. |
 
-### Recommended debug output for bug reports
+Equivalent shortened aliases are available with the `as` prefix, such as `asList`, `asUse`, `asDelete` and `asReload`.
 
-- Input binding does not open AvatarSwitcher: run `asInputDebug`.
-- Wardrobe SAVE button does not appear: run `asWardrobeDebug`.
-- Appearance does not apply or refresh correctly: run `asProbe`.
-- Presets are missing or not loading: run `avatarList` and `asReload`.
+## Integration API
+
+Avatar Switcher exposes these global API tables for other mods:
+
+```lua
+AvatarSwitcherAPI
+FS25_AvatarSwitcherAPI
+```
+
+The API supports availability checks, preset lookup, category filtering, reload requests and conversion of a saved preset into a runtime `PlayerStyle` object.
+
+Useful entry points include:
+
+```lua
+AvatarSwitcherAPI.isAvailable()
+AvatarSwitcherAPI.getPresets()
+AvatarSwitcherAPI.getPresetsByCategory(category)
+AvatarSwitcherAPI.getPreset(presetId)
+AvatarSwitcherAPI.getPresetLabel(presetId)
+AvatarSwitcherAPI.createPlayerStyleFromPresetId(presetId)
+AvatarSwitcherAPI.reload()
+```
+
+## Localisation
+
+Included languages:
+
+- English
+- German
+- French
+
+Localisation files are stored in the `l10n` folder. Contributions for additional languages are welcome.
 
 ## Known Limitations
 
-- Multiplayer has not been formally validated.
-- Some third-party GUI/input mods may conflict with embedded buttons or input actions.
-- Runtime character refresh depends on FS25 player/wardrobe internals and may vary by game patch.
-- The older raw HUD code remains as fallback/compatibility code, but the default interface is now native XML GUI.
+- Multiplayer is intentionally disabled and unsupported.
+- Live appearance refresh depends on the current player and wardrobe runtime state. When an immediate refresh is not possible, reopening the wardrobe or reloading the save applies the stored appearance.
+- Preset IDs must be unique.
 
-## Version
+## Licence and Credits
 
-```text
-v0.6.0-beta
-```
+Created by **SimGamerJen**.
 
-Recommended GitHub tag:
-
-```text
-v0.6.0-beta
-```
+The Farming Simulator name and related assets are trademarks of GIANTS Software. This project is an independent mod and is not affiliated with or endorsed by GIANTS Software.

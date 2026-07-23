@@ -1,5 +1,5 @@
 -- FS25_AvatarSwitcher
--- ModVersion: 1.0.0.1
+-- ModVersion: 1.0.0.0
 -- File: AS_Dialog.lua
 -- BuildTag: 20260514.3
 -- FS25-native GUI dialog for selecting, applying and deleting AvatarSwitcher presets.

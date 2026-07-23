@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="110" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://validation.gdn.giants-software.com/xml/fs25/modDesc.xsd">
     <author>SimGamerJen</author>
-    <version>1.0.0.1</version>
+    <version>1.0.0.0</version>
 
     <title>
         <en>Avatar Switcher</en>
@@ -22,9 +22,6 @@ Features:
 
 This mod is designed for single-player use and does not support multiplayer.
 
-Changelog 1.0.0.1:
-- Added German and French language support
-- Localized menus, dialogs, controls, prompts and notifications
 ]]></en>
         <de><![CDATA[
 Speichere das aktuelle Aussehen des Spielers als wiederverwendbare Voreinstellung und wechsle über ein Menü im Spiel zwischen gespeicherten Avataren.
@@ -38,9 +35,6 @@ Funktionen:
 
 Dieser Mod ist für den Einzelspielermodus vorgesehen und unterstützt keinen Mehrspielermodus.
 
-Changelog 1.0.0.1:
-- Deutsche und französische Sprachunterstützung hinzugefügt
-- Menüs, Dialoge, Bedienelemente, Abfragen und Benachrichtigungen lokalisiert
 ]]></de>
         <fr><![CDATA[
 Enregistrez l'apparence actuelle du joueur comme préréglage réutilisable et passez d'un avatar enregistré à un autre depuis un menu en jeu.
@@ -54,9 +48,6 @@ Fonctionnalités :
 
 Ce mod est conçu pour le mode solo et ne prend pas en charge le multijoueur.
 
-Changelog 1.0.0.1:
-- Ajout de la prise en charge de l'allemand et du français
-- Localisation des menus, boîtes de dialogue, commandes, confirmations et notifications
 ]]></fr>
     </description>
 

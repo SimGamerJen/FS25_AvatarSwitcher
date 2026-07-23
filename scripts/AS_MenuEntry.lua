@@ -1,5 +1,5 @@
 -- FS25_AvatarSwitcher
--- ModVersion: 1.0.0.1
+-- ModVersion: 1.0.0.0
 -- File: AS_MenuEntry.lua
 -- BuildTag: 20260513.1
 -- Compatibility shim. The old top-right in-game pause-menu button has been retired.
