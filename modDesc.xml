@@ -61,6 +61,7 @@ Ce mod est conçu pour le mode solo et ne prend pas en charge le multijoueur.
         <sourceFile filename="scripts/AS_Main.lua" />
         <sourceFile filename="scripts/AS_Dialog.lua" />
         <sourceFile filename="scripts/AS_SaveDialog.lua" />
+        <sourceFile filename="scripts/AS_SaveDialogEnhanced.lua" />
         <sourceFile filename="scripts/AS_HUD.lua" />
         <sourceFile filename="scripts/AS_MenuEntry.lua" />
         <sourceFile filename="scripts/AS_API.lua" />
