@@ -15,39 +15,69 @@ Save the current player appearance as a reusable preset and switch between saved
 
 Features:
 - Save the current wardrobe appearance as a preset
-- Organize presets by category
-- Apply, reload and delete saved presets
-- Open the selector on foot or while driving
-- Store presets in the Avatar Switcher mod settings folder
+- Give each preset a unique ID, display name and category
+- Select an existing category or create a new category when saving
+- Filter, apply and delete saved appearances from the Avatar Switcher menu
+- Open the selector while on foot or inside a vehicle
+- Store presets in the Avatar Switcher mod settings folder so they remain available after mod updates
+
+How to use:
+1. Open the wardrobe and configure the player appearance.
+2. Select "Save to AvatarSwitcher".
+3. Enter a unique Preset ID and an optional Display Name.
+4. Select an existing category or enter a new category, then select Save.
+5. Assign "Open Avatar Switcher" in the game control settings.
+6. Use the assigned control, select a category and appearance, then select Apply.
+
+Deleting a preset does not change the appearance currently being used.
 
 This mod is designed for single-player use and does not support multiplayer.
-
 ]]></en>
         <de><![CDATA[
 Speichere das aktuelle Aussehen des Spielers als wiederverwendbare Voreinstellung und wechsle über ein Menü im Spiel zwischen gespeicherten Avataren.
 
 Funktionen:
 - Aktuelles Garderoben-Aussehen als Voreinstellung speichern
-- Voreinstellungen nach Kategorien ordnen
-- Gespeicherte Voreinstellungen anwenden, neu laden und löschen
+- Jeder Voreinstellung eine eindeutige ID, einen Anzeigenamen und eine Kategorie zuweisen
+- Beim Speichern eine vorhandene Kategorie auswählen oder eine neue Kategorie erstellen
+- Gespeicherte Erscheinungsbilder im Avatar-Wechsler filtern, anwenden und löschen
 - Auswahl zu Fuß oder während der Fahrt öffnen
-- Voreinstellungen im Mod-Einstellungsordner von Avatar Switcher speichern
+- Voreinstellungen im Mod-Einstellungsordner von Avatar Switcher speichern, damit sie nach Mod-Aktualisierungen erhalten bleiben
+
+Verwendung:
+1. Öffne die Garderobe und passe das Aussehen des Spielers an.
+2. Wähle "In AvatarSwitcher speichern".
+3. Gib eine eindeutige Preset-ID und optional einen Anzeigenamen ein.
+4. Wähle eine vorhandene Kategorie oder gib eine neue Kategorie ein und wähle anschließend Speichern.
+5. Weise in den Spieleinstellungen die Steuerung "Avatar-Wechsler öffnen" zu.
+6. Verwende die zugewiesene Steuerung, wähle eine Kategorie und ein Erscheinungsbild und anschließend Anwenden.
+
+Das Löschen einer Voreinstellung verändert das aktuell verwendete Erscheinungsbild nicht.
 
 Dieser Mod ist für den Einzelspielermodus vorgesehen und unterstützt keinen Mehrspielermodus.
-
 ]]></de>
         <fr><![CDATA[
 Enregistrez l'apparence actuelle du joueur comme préréglage réutilisable et passez d'un avatar enregistré à un autre depuis un menu en jeu.
 
 Fonctionnalités :
 - Enregistrer l'apparence actuelle de la garde-robe comme préréglage
-- Classer les préréglages par catégorie
-- Appliquer, recharger et supprimer les préréglages enregistrés
+- Attribuer à chaque préréglage un ID unique, un nom d'affichage et une catégorie
+- Sélectionner une catégorie existante ou créer une nouvelle catégorie lors de l'enregistrement
+- Filtrer, appliquer et supprimer les apparences enregistrées depuis le sélecteur d'avatar
 - Ouvrir le sélecteur à pied ou au volant d'un véhicule
-- Stocker les préréglages dans le dossier de paramètres du mod Avatar Switcher
+- Stocker les préréglages dans le dossier de paramètres du mod Avatar Switcher afin de les conserver après les mises à jour du mod
+
+Utilisation :
+1. Ouvrez la garde-robe et configurez l'apparence du joueur.
+2. Sélectionnez "Enregistrer dans AvatarSwitcher".
+3. Saisissez un ID de préréglage unique et, si vous le souhaitez, un nom d'affichage.
+4. Sélectionnez une catégorie existante ou saisissez une nouvelle catégorie, puis sélectionnez Enregistrer.
+5. Assignez la commande "Ouvrir le sélecteur d'avatar" dans les paramètres des commandes du jeu.
+6. Utilisez la commande assignée, sélectionnez une catégorie et une apparence, puis sélectionnez Appliquer.
+
+La suppression d'un préréglage ne modifie pas l'apparence actuellement utilisée.
 
 Ce mod est conçu pour le mode solo et ne prend pas en charge le multijoueur.
-
 ]]></fr>
     </description>
 
