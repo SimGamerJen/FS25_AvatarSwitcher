@@ -21,13 +21,19 @@ Features:
 - Open the selector while on foot or inside a vehicle
 - Store presets in the Avatar Switcher mod settings folder so they remain available after mod updates
 
+Controls:
+- The mod adds an "Open Avatar Switcher" action to the game control settings
+- No keyboard or controller button is assigned by default
+- Open the game control settings and assign your preferred key or controller button to "Open Avatar Switcher"
+- The assigned control can be used while on foot or inside a vehicle
+
 How to use:
 1. Open the wardrobe and configure the player appearance.
 2. Select "Save to AvatarSwitcher".
 3. Enter a unique Preset ID and an optional Display Name.
 4. Select an existing category or enter a new category, then select Save.
-5. Assign "Open Avatar Switcher" in the game control settings.
-6. Use the assigned control, select a category and appearance, then select Apply.
+5. Press the key or controller button assigned to "Open Avatar Switcher".
+6. Select a category and appearance, then select Apply.
 
 Deleting a preset does not change the appearance currently being used.
 
@@ -44,13 +50,19 @@ Funktionen:
 - Auswahl zu Fuß oder während der Fahrt öffnen
 - Voreinstellungen im Mod-Einstellungsordner von Avatar Switcher speichern, damit sie nach Mod-Aktualisierungen erhalten bleiben
 
+Steuerung:
+- Der Mod fügt den Spieleinstellungen die Aktion "Avatar-Wechsler öffnen" hinzu
+- Standardmäßig ist keine Tastatur- oder Controller-Taste zugewiesen
+- Öffne die Steuerungseinstellungen und weise "Avatar-Wechsler öffnen" eine gewünschte Taste oder Controller-Taste zu
+- Die zugewiesene Steuerung kann zu Fuß oder in einem Fahrzeug verwendet werden
+
 Verwendung:
 1. Öffne die Garderobe und passe das Aussehen des Spielers an.
 2. Wähle "In AvatarSwitcher speichern".
 3. Gib eine eindeutige Preset-ID und optional einen Anzeigenamen ein.
 4. Wähle eine vorhandene Kategorie oder gib eine neue Kategorie ein und wähle anschließend Speichern.
-5. Weise in den Spieleinstellungen die Steuerung "Avatar-Wechsler öffnen" zu.
-6. Verwende die zugewiesene Steuerung, wähle eine Kategorie und ein Erscheinungsbild und anschließend Anwenden.
+5. Drücke die Taste oder Controller-Taste, die "Avatar-Wechsler öffnen" zugewiesen wurde.
+6. Wähle eine Kategorie und ein Erscheinungsbild und anschließend Anwenden.
 
 Das Löschen einer Voreinstellung verändert das aktuell verwendete Erscheinungsbild nicht.
 
@@ -67,13 +79,19 @@ Fonctionnalités :
 - Ouvrir le sélecteur à pied ou au volant d'un véhicule
 - Stocker les préréglages dans le dossier de paramètres du mod Avatar Switcher afin de les conserver après les mises à jour du mod
 
+Commandes :
+- Le mod ajoute l'action "Ouvrir le sélecteur d'avatar" aux paramètres des commandes du jeu
+- Aucune touche de clavier ni aucun bouton de manette n'est attribué par défaut
+- Ouvrez les paramètres des commandes et attribuez la touche ou le bouton de votre choix à "Ouvrir le sélecteur d'avatar"
+- La commande attribuée peut être utilisée à pied ou dans un véhicule
+
 Utilisation :
 1. Ouvrez la garde-robe et configurez l'apparence du joueur.
 2. Sélectionnez "Enregistrer dans AvatarSwitcher".
 3. Saisissez un ID de préréglage unique et, si vous le souhaitez, un nom d'affichage.
 4. Sélectionnez une catégorie existante ou saisissez une nouvelle catégorie, puis sélectionnez Enregistrer.
-5. Assignez la commande "Ouvrir le sélecteur d'avatar" dans les paramètres des commandes du jeu.
-6. Utilisez la commande assignée, sélectionnez une catégorie et une apparence, puis sélectionnez Appliquer.
+5. Appuyez sur la touche ou le bouton attribué à "Ouvrir le sélecteur d'avatar".
+6. Sélectionnez une catégorie et une apparence, puis sélectionnez Appliquer.
 
 La suppression d'un préréglage ne modifie pas l'apparence actuellement utilisée.
 
