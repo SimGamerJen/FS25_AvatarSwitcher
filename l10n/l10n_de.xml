@@ -43,5 +43,23 @@
         <text name="as_notify_deleted" text="Avatar-Preset gelöscht: %s" />
         <text name="as_notify_reloaded" text="Avatar-Presets neu geladen" />
         <text name="as_preset_not_found" text="Preset nicht gefunden: %s" />
+        <text name="as_display_name" text="Anzeigename" />
+        <text name="as_new_category_optional" text="Neue Kategorie (optional)" />
+        <text name="as_help" text="Hilfe" />
+        <text name="as_preset_id_example" text="z. B. jen_winter_workwear" />
+        <text name="as_display_name_example" text="z. B. Jen – Winter-Arbeitskleidung" />
+        <text name="as_new_category_example" text="Leer lassen oder z. B. Saisonal eingeben" />
+        <text name="as_validation_id_required" text="Gib eine Preset-ID ein." />
+        <text name="as_validation_id_exists" text="Die Preset-ID ist bereits vorhanden: %s" />
+        <text name="as_validation_ready_id_name" text="Bereit zum Speichern. Die Preset-ID wird auch als Anzeigename verwendet." />
+        <text name="as_validation_ready" text="Dieses Erscheinungsbild kann gespeichert werden." />
+        <text name="as_help_preset_id_title" text="Preset-ID" />
+        <text name="as_help_preset_id_text" text="Ein eindeutiger interner Schlüssel für Avatar Switcher und kompatible Mods.&#10;&#10;Beispiel: jen_winter_workwear&#10;&#10;Leerzeichen werden als Unterstriche gespeichert. Verwende Buchstaben, Zahlen, Unterstriche oder Bindestriche." />
+        <text name="as_help_display_name_title" text="Anzeigename" />
+        <text name="as_help_display_name_text" text="Der lesbare Name im Avatar-Switcher-Menü.&#10;&#10;Beispiel: Jen – Winter-Arbeitskleidung&#10;&#10;Leer lassen, um die Preset-ID zu verwenden." />
+        <text name="as_help_category_title" text="Vorhandene Kategorie" />
+        <text name="as_help_category_text" text="Wähle eine Kategorie, die bereits von gespeicherten Avataren verwendet wird.&#10;&#10;Die markierte Zeile wird verwendet, sofern unter Neue Kategorie kein Wert eingegeben wird." />
+        <text name="as_help_new_category_title" text="Neue Kategorie" />
+        <text name="as_help_new_category_text" text="Gib einen neuen Kategorienamen ein, um ihn beim Speichern anzulegen.&#10;&#10;Beispiel: Saisonal&#10;&#10;Leer lassen, um die ausgewählte vorhandene Kategorie zu verwenden." />
     </texts>
 </l10n>

@@ -6,6 +6,8 @@
 
 - Save the current wardrobe appearance as an avatar preset.
 - Give each preset a unique ID, display name and category.
+- Select an existing category or create a new category while saving.
+- Contextual help explains the save fields with examples.
 - Filter saved appearances by category.
 - Apply or delete presets through an in-game selector.
 - Open Avatar Switcher while on foot or inside a vehicle.
@@ -44,11 +46,10 @@ Do not extract the mod ZIP into the mods folder.
 
 1. Open the Farming Simulator wardrobe and configure the player appearance.
 2. Select **Save to AvatarSwitcher**.
-3. Enter:
-   - **Preset ID** — a unique identifier stored without spaces.
-   - **Description** — the name shown in the selector.
-   - **Category** — used to group related presets.
-4. Select **Save**.
+3. Enter a unique **Preset ID**. This is the internal identifier used by Avatar Switcher and compatible mods; spaces are stored as underscores.
+4. Enter an optional **Display Name**. This is the readable name shown in the selector. If left blank, the Preset ID is used.
+5. Choose one of the existing categories shown in the list, or enter a value in **New Category** to create and use a new category.
+6. Use the contextual Help panel for field explanations and examples, then select **Save**.
 
 ### Applying an appearance
 

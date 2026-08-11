@@ -15,48 +15,81 @@ Save the current player appearance as a reusable preset and switch between saved
 
 Features:
 - Save the current wardrobe appearance as a preset
-- Organize presets by category
-- Apply, reload and delete saved presets
-- Open the selector on foot or while driving
+- Give each preset a unique ID, display name and category
+- Select an existing category or create a new category when saving
+- Contextual help explains the Preset ID, Display Name and Category fields
+- Filter, apply and delete saved appearances from the Avatar Switcher menu
+- Open the selector while on foot or inside a vehicle
 - Store presets in the Avatar Switcher mod settings folder
 
 Default control:
 ' opens Avatar Switcher. The key binding can be changed in the in-game controls menu.
 
-This mod is designed for single-player use and does not support multiplayer.
+How to use:
+1. Open the wardrobe and configure the player appearance.
+2. Select "Save to AvatarSwitcher".
+3. Enter a unique Preset ID and an optional Display Name.
+4. Select an existing category or enter a new category, then select Save.
+5. Press ' to open Avatar Switcher.
+6. Select a category and appearance, then select Apply.
 
+Deleting a preset does not change the appearance currently being used.
+
+This mod is designed for single-player use and does not support multiplayer.
 ]]></en>
         <de><![CDATA[
 Speichere das aktuelle Aussehen des Spielers als wiederverwendbare Voreinstellung und wechsle über ein Menü im Spiel zwischen gespeicherten Avataren.
 
 Funktionen:
 - Aktuelles Garderoben-Aussehen als Voreinstellung speichern
-- Voreinstellungen nach Kategorien ordnen
-- Gespeicherte Voreinstellungen anwenden, neu laden und löschen
+- Jeder Voreinstellung eine eindeutige ID, einen Anzeigenamen und eine Kategorie zuweisen
+- Beim Speichern eine vorhandene Kategorie auswählen oder eine neue Kategorie erstellen
+- Kontextbezogene Hilfe erklärt Preset-ID, Anzeigename und Kategorie
+- Gespeicherte Erscheinungsbilder im Avatar-Wechsler filtern, anwenden und löschen
 - Auswahl zu Fuß oder während der Fahrt öffnen
 - Voreinstellungen im Mod-Einstellungsordner von Avatar Switcher speichern
 
 Standardsteuerung:
 ' öffnet den Avatar-Wechsler. Die Tastenbelegung kann im Steuerungsmenü des Spiels geändert werden.
 
-Dieser Mod ist für den Einzelspielermodus vorgesehen und unterstützt keinen Mehrspielermodus.
+Verwendung:
+1. Öffne die Garderobe und passe das Aussehen des Spielers an.
+2. Wähle "In AvatarSwitcher speichern".
+3. Gib eine eindeutige Preset-ID und optional einen Anzeigenamen ein.
+4. Wähle eine vorhandene Kategorie oder gib eine neue Kategorie ein und wähle anschließend Speichern.
+5. Drücke ', um den Avatar-Wechsler zu öffnen.
+6. Wähle eine Kategorie und ein Erscheinungsbild und anschließend Anwenden.
 
+Das Löschen einer Voreinstellung verändert das aktuell verwendete Erscheinungsbild nicht.
+
+Dieser Mod ist für den Einzelspielermodus vorgesehen und unterstützt keinen Mehrspielermodus.
 ]]></de>
         <fr><![CDATA[
 Enregistrez l'apparence actuelle du joueur comme préréglage réutilisable et passez d'un avatar enregistré à un autre depuis un menu en jeu.
 
 Fonctionnalités :
 - Enregistrer l'apparence actuelle de la garde-robe comme préréglage
-- Classer les préréglages par catégorie
-- Appliquer, recharger et supprimer les préréglages enregistrés
+- Attribuer à chaque préréglage un ID unique, un nom d'affichage et une catégorie
+- Sélectionner une catégorie existante ou créer une nouvelle catégorie lors de l'enregistrement
+- Une aide contextuelle explique l'ID du préréglage, le nom affiché et la catégorie
+- Filtrer, appliquer et supprimer les apparences enregistrées depuis le sélecteur d'avatar
 - Ouvrir le sélecteur à pied ou au volant d'un véhicule
 - Stocker les préréglages dans le dossier de paramètres du mod Avatar Switcher
 
 Commande par défaut :
 ' ouvre Avatar Switcher. Cette touche peut être modifiée dans le menu des commandes du jeu.
 
-Ce mod est conçu pour le mode solo et ne prend pas en charge le multijoueur.
+Utilisation :
+1. Ouvrez la garde-robe et configurez l'apparence du joueur.
+2. Sélectionnez "Enregistrer dans AvatarSwitcher".
+3. Saisissez un ID de préréglage unique et, si vous le souhaitez, un nom d'affichage.
+4. Sélectionnez une catégorie existante ou saisissez une nouvelle catégorie, puis sélectionnez Enregistrer.
+5. Appuyez sur ' pour ouvrir Avatar Switcher.
+6. Sélectionnez une catégorie et une apparence, puis sélectionnez Appliquer.
 
+La suppression d'un préréglage ne modifie pas l'apparence actuellement utilisée.
+
+Ce mod est conçu pour le mode solo et ne prend pas en charge le multijoueur.
 ]]></fr>
     </description>
 
@@ -70,6 +103,7 @@ Ce mod est conçu pour le mode solo et ne prend pas en charge le multijoueur.
         <sourceFile filename="scripts/AS_Main.lua" />
         <sourceFile filename="scripts/AS_Dialog.lua" />
         <sourceFile filename="scripts/AS_SaveDialog.lua" />
+        <sourceFile filename="scripts/AS_SaveDialogEnhanced.lua" />
         <sourceFile filename="scripts/AS_HUD.lua" />
         <sourceFile filename="scripts/AS_MenuEntry.lua" />
         <sourceFile filename="scripts/AS_API.lua" />
