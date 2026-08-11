@@ -20,6 +20,9 @@ Features:
 - Open the selector on foot or while driving
 - Store presets in the Avatar Switcher mod settings folder
 
+Default control:
+' opens Avatar Switcher. The key binding can be changed in the in-game controls menu.
+
 This mod is designed for single-player use and does not support multiplayer.
 
 ]]></en>
@@ -33,6 +36,9 @@ Funktionen:
 - Auswahl zu Fuß oder während der Fahrt öffnen
 - Voreinstellungen im Mod-Einstellungsordner von Avatar Switcher speichern
 
+Standardsteuerung:
+' öffnet den Avatar-Wechsler. Die Tastenbelegung kann im Steuerungsmenü des Spiels geändert werden.
+
 Dieser Mod ist für den Einzelspielermodus vorgesehen und unterstützt keinen Mehrspielermodus.
 
 ]]></de>
@@ -45,6 +51,9 @@ Fonctionnalités :
 - Appliquer, recharger et supprimer les préréglages enregistrés
 - Ouvrir le sélecteur à pied ou au volant d'un véhicule
 - Stocker les préréglages dans le dossier de paramètres du mod Avatar Switcher
+
+Commande par défaut :
+' ouvre Avatar Switcher. Cette touche peut être modifiée dans le menu des commandes du jeu.
 
 Ce mod est conçu pour le mode solo et ne prend pas en charge le multijoueur.
 
@@ -66,12 +75,19 @@ Ce mod est conçu pour le mode solo et ne prend pas en charge le multijoueur.
         <sourceFile filename="scripts/AS_API.lua" />
         <sourceFile filename="scripts/AS_InputEvents.lua" />
         <sourceFile filename="scripts/AS_Wardrobe.lua" />
+        <sourceFile filename="scripts/AS_Compliance.lua" />
         <sourceFile filename="scripts/AS_Console.lua" />
     </extraSourceFiles>
 
     <actions>
         <action name="ASZ_HUD" category="MISC" axisType="HALF" />
     </actions>
+
+    <inputBinding>
+        <actionBinding action="ASZ_HUD">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_quote" />
+        </actionBinding>
+    </inputBinding>
 
     <l10n filenamePrefix="l10n/l10n" />
 </modDesc>
