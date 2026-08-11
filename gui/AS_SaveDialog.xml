@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <GUI onOpen="onOpen" onClose="onClose" onCreate="onCreate">
     <Bitmap profile="dialogFullscreenBg" id="dialogBg" />
-    <GuiElement profile="fs25_dialogBg" id="dialogElement" size="1120px 680px">
+    <GuiElement profile="fs25_dialogBg" id="dialogElement" size="1080px 620px">
         <ThreePartBitmap profile="fs25_dialogBgMiddle" />
         <ThreePartBitmap profile="fs25_dialogBgTop" />
         <ThreePartBitmap profile="fs25_dialogBgBottom" />
@@ -9,50 +9,48 @@
         <GuiElement profile="fs25_dialogContentContainer">
             <Text profile="dialogTitle" text="$l10n_as_save_avatar" id="dialogTitleElement" position="0px -30px" />
 
-            <GuiElement position="45px -85px" size="620px 535px">
-                <Bitmap profile="asHeaderBox" position="0px 0px" size="600px 34px">
-                    <Text profile="asHeaderLeft" id="presetIdHeaderText" position="10px 0px" size="570px 32px" text="$l10n_as_preset_id" />
-                </Bitmap>
-                <Button profile="asInputFieldButton" id="idField" position="0px -39px" size="600px 40px" text="$l10n_as_preset_id" onClick="onClickIdField" />
+            <GuiElement position="45px -70px" size="600px 480px">
+                <GuiElement position="0px 0px" size="570px 32px">
+                    <Text profile="asHeaderLeft" id="presetIdHeaderText" position="0px 0px" size="570px 32px" text="$l10n_as_preset_id" />
+                </GuiElement>
+                <Button profile="asInputFieldButton" id="idField" position="0px -36px" size="570px 40px" text="$l10n_as_preset_id" onClick="onClickIdField" />
 
-                <Bitmap profile="asHeaderBox" position="0px -88px" size="600px 34px">
-                    <Text profile="asHeaderLeft" id="displayNameHeaderText" position="10px 0px" size="570px 32px" text="$l10n_as_display_name" />
-                </Bitmap>
-                <Button profile="asInputFieldButton" id="displayNameField" position="0px -127px" size="600px 40px" text="$l10n_as_display_name" onClick="onClickDisplayNameField" />
+                <GuiElement position="0px -84px" size="570px 32px">
+                    <Text profile="asHeaderLeft" id="displayNameHeaderText" position="0px 0px" size="570px 32px" text="$l10n_as_display_name" />
+                </GuiElement>
+                <Button profile="asInputFieldButton" id="displayNameField" position="0px -120px" size="570px 40px" text="$l10n_as_display_name" onClick="onClickDisplayNameField" />
 
-                <Bitmap profile="asHeaderBox" position="0px -176px" size="600px 34px">
-                    <Text profile="asHeaderLeft" id="categoryHeaderText" position="10px 0px" size="570px 32px" text="$l10n_as_category" />
-                </Bitmap>
+                <GuiElement position="0px -168px" size="570px 32px">
+                    <Text profile="asHeaderLeft" id="categoryHeaderText" position="0px 0px" size="570px 32px" text="$l10n_as_category" />
+                </GuiElement>
 
-                <SmoothList profile="asList" id="categoryTable" position="0px -215px" size="580px 125px" handleFocus="true" selectedWithoutFocus="true">
-                    <ListItem profile="asListItem" name="categoryRowTemplate" size="580px 38px">
-                        <Text profile="asRowCellLeft" position="12px 0px" size="550px 38px" name="CategoryName" />
+                <SmoothList profile="asList" id="categoryTable" position="0px -204px" size="550px 118px" handleFocus="true" selectedWithoutFocus="true">
+                    <ListItem profile="asListItem" name="categoryRowTemplate" size="550px 38px">
+                        <Text profile="asRowCellLeft" position="12px 0px" size="520px 38px" name="CategoryName" />
                     </ListItem>
                 </SmoothList>
-                <ThreePartBitmap profile="fs25_listSliderBox" position="585px -215px" size="12px 125px">
-                    <Slider profile="fs25_listSlider" size="6px 117px" dataElementId="categoryTable" id="categorySlider" />
+                <ThreePartBitmap profile="fs25_listSliderBox" position="556px -204px" size="12px 118px">
+                    <Slider profile="fs25_listSlider" size="6px 110px" dataElementId="categoryTable" id="categorySlider" />
                 </ThreePartBitmap>
 
-                <Bitmap profile="asHeaderBox" position="0px -350px" size="600px 34px">
-                    <Text profile="asHeaderLeft" id="newCategoryHeaderText" position="10px 0px" size="570px 32px" text="$l10n_as_new_category_optional" />
-                </Bitmap>
-                <Button profile="asInputFieldButton" id="newCategoryField" position="0px -389px" size="600px 40px" text="$l10n_as_new_category_optional" onClick="onClickNewCategoryField" />
+                <GuiElement position="0px -332px" size="570px 32px">
+                    <Text profile="asHeaderLeft" id="newCategoryHeaderText" position="0px 0px" size="570px 32px" text="$l10n_as_new_category_optional" />
+                </GuiElement>
+                <Button profile="asInputFieldButton" id="newCategoryField" position="0px -368px" size="570px 40px" text="$l10n_as_new_category_optional" onClick="onClickNewCategoryField" />
 
-                <Bitmap profile="asDetailBox" position="0px -445px" size="600px 58px">
-                    <Text profile="asMetaText" id="validationText" position="12px -4px" size="576px 50px" text="$l10n_as_save_instructions" textMaxNumLines="2" />
-                </Bitmap>
+                <GuiElement position="0px -416px" size="570px 46px">
+                    <Text profile="asMetaText" id="validationText" position="0px 0px" size="570px 44px" text="$l10n_as_save_instructions" textMaxNumLines="2" />
+                </GuiElement>
             </GuiElement>
 
-            <GuiElement position="700px -85px" size="330px 535px">
-                <Bitmap profile="asDetailBox" position="0px 0px" size="330px 503px">
-                    <Text profile="asHeaderLeft" id="helpHeaderText" position="18px -10px" size="294px 34px" text="$l10n_as_help" />
-                    <Text profile="asHeaderLeft" id="helpTitleText" position="18px -70px" size="294px 38px" text="$l10n_as_preset_id" />
-                    <Text profile="asMetaText" id="helpBodyText" position="18px -118px" size="294px 350px" text="" textVerticalAlignment="top" textMaxNumLines="16" />
-                </Bitmap>
+            <GuiElement position="665px -70px" size="330px 480px">
+                <Text profile="asHeaderLeft" id="helpHeaderText" position="0px 0px" size="310px 32px" text="$l10n_as_help" />
+                <Text profile="asHeaderLeft" id="helpTitleText" position="0px -55px" size="310px 38px" text="$l10n_as_preset_id" />
+                <Text profile="asMetaText" id="helpBodyText" position="0px -100px" size="310px 300px" text="" textVerticalAlignment="top" textMaxNumLines="16" />
             </GuiElement>
         </GuiElement>
 
-        <BoxLayout profile="fs25_dialogButtonBox" size="1070px 60px">
+        <BoxLayout profile="fs25_dialogButtonBox" size="1030px 60px">
             <Button profile="buttonBack" id="cancelButton" text="$l10n_as_cancel" onClick="onClickBack" />
             <Button profile="asButtonSaveEnter" id="saveButton" text="$l10n_as_save" onClick="onClickSave" />
         </BoxLayout>
