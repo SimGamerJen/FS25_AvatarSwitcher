@@ -1,7 +1,7 @@
 -- FS25_AvatarSwitcher
 -- ModVersion: 1.0.0.0
 -- File: AS_Main.lua
--- BuildTag: 20260514.3
+-- BuildTag: 20260811.1
 
 AvatarSwitcher = AvatarSwitcher or {}
 AvatarSwitcher.modDirectory = g_currentModDirectory or ""
@@ -13,7 +13,6 @@ function AvatarSwitcher:setupPaths()
     self.profilePath = getUserProfileAppPath()
     self.modSettingsDir = self.profilePath .. "modSettings/FS25_AvatarSwitcher/"
     self.presetsFile = self.modSettingsDir .. "avatarPresets.xml"
-    self.templateFile = self.modDirectory .. "templates/avatarPresets.xml"
     self.gameSettingsFile = self.profilePath .. "gameSettings.xml"
 end
 
@@ -23,17 +22,18 @@ function AvatarSwitcher:ensureSettingsFile()
     end
 
     if not fileExists(self.presetsFile) then
-        if fileExists(self.templateFile) then
-            local ok = copyFile(self.templateFile, self.presetsFile, false)
-            if ok then
-                self:log("Seeded preset file: " .. tostring(self.presetsFile))
-            else
-                self:error("Failed to seed preset file: " .. tostring(self.presetsFile))
-            end
-        else
-            self:error("Template file not found: " .. tostring(self.templateFile))
+        local xmlFile = createXMLFile("avatarSwitcherPresetsSeed", self.presetsFile, "avatarSwitcher")
+        if xmlFile == nil or xmlFile == 0 then
+            self:error("Failed to create preset file: " .. tostring(self.presetsFile))
+            return false
         end
+
+        saveXMLFile(xmlFile)
+        delete(xmlFile)
+        self:log("Created preset file: " .. tostring(self.presetsFile))
     end
+
+    return true
 end
 
 function AvatarSwitcher:initialize()
@@ -42,7 +42,9 @@ function AvatarSwitcher:initialize()
     end
 
     self:setupPaths()
-    self:ensureSettingsFile()
+    if not self:ensureSettingsFile() then
+        return
+    end
     self:loadPresets()
     self.initialized = true
 
@@ -172,7 +174,6 @@ function AvatarSwitcher:saveCurrentAsPreset(id, ...)
 
     return ok
 end
-
 
 function AvatarSwitcher:deletePreset(presetId)
     self:initialize()

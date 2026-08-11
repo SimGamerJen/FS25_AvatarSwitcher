@@ -6,6 +6,8 @@
 
 - Save the current wardrobe appearance as an avatar preset.
 - Give each preset a unique ID, display name and category.
+- Select an existing category or create a new category while saving.
+- Contextual help explains the save fields with examples.
 - Filter saved appearances by category.
 - Apply or delete presets through an in-game selector.
 - Open Avatar Switcher while on foot or inside a vehicle.
@@ -34,7 +36,7 @@
    ```
 
 3. Enable **Avatar Switcher** when loading your save.
-4. Open the in-game control settings and assign a key or button to **Open Avatar Switcher** if it is not already mapped.
+4. Press **'** (apostrophe/quote) to open Avatar Switcher. The binding can be changed in the in-game controls menu.
 
 Do not extract the mod ZIP into the mods folder.
 
@@ -44,15 +46,14 @@ Do not extract the mod ZIP into the mods folder.
 
 1. Open the Farming Simulator wardrobe and configure the player appearance.
 2. Select **Save to AvatarSwitcher**.
-3. Enter:
-   - **Preset ID** — a unique identifier stored without spaces.
-   - **Description** — the name shown in the selector.
-   - **Category** — used to group related presets.
-4. Select **Save**.
+3. Enter a unique **Preset ID**. This is the internal identifier used by Avatar Switcher and compatible mods; spaces are stored as underscores.
+4. Enter an optional **Display Name**. This is the readable name shown in the selector. If left blank, the Preset ID is used.
+5. Choose one of the existing categories shown in the list, or enter a value in **New Category** to create and use a new category.
+6. Use the contextual Help panel for field explanations and examples, then select **Save**.
 
 ### Applying an appearance
 
-1. Use the mapped **Open Avatar Switcher** control.
+1. Press the mapped **Open Avatar Switcher** control.
 2. Select a category.
 3. Select a saved appearance.
 4. Choose **Apply**.
@@ -71,7 +72,7 @@ Avatar presets are stored at:
 Documents/My Games/FarmingSimulator2025/modSettings/FS25_AvatarSwitcher/avatarPresets.xml
 ```
 
-On first use, Avatar Switcher creates this file from the included template. The file remains in the `modSettings` folder when the mod ZIP is updated.
+On first use, Avatar Switcher creates a new empty preset file directly in the `modSettings` folder. Saved presets remain there when the mod ZIP is updated.
 
 Before Avatar Switcher first writes an appearance to `gameSettings.xml`, it creates this backup when one does not already exist:
 
@@ -134,6 +135,7 @@ Localisation files are stored in the `l10n` folder. Contributions for additional
 
 - Multiplayer is intentionally disabled and unsupported.
 - Live appearance refresh depends on the current player and wardrobe runtime state. When an immediate refresh is not possible, reopening the wardrobe or reloading the save applies the stored appearance.
+- Player configuration paths are validated before live refresh so an unknown or unavailable model configuration is not passed to the game loader.
 - Preset IDs must be unique.
 
 ## Licence and Credits

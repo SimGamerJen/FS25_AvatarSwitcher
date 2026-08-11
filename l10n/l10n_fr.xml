@@ -43,5 +43,23 @@
         <text name="as_notify_deleted" text="Préréglage d'avatar supprimé : %s" />
         <text name="as_notify_reloaded" text="Préréglages d'avatar rechargés" />
         <text name="as_preset_not_found" text="Préréglage introuvable : %s" />
+        <text name="as_display_name" text="Nom affiché" />
+        <text name="as_new_category_optional" text="Nouvelle catégorie (facultatif)" />
+        <text name="as_help" text="Aide" />
+        <text name="as_preset_id_example" text="par ex. jen_winter_workwear" />
+        <text name="as_display_name_example" text="par ex. Jen – Tenue de travail d'hiver" />
+        <text name="as_new_category_example" text="Laissez vide ou saisissez par ex. Saisonnier" />
+        <text name="as_validation_id_required" text="Saisissez un ID de préréglage." />
+        <text name="as_validation_id_exists" text="L'ID du préréglage existe déjà : %s" />
+        <text name="as_validation_ready_id_name" text="Prêt à enregistrer. L'ID du préréglage sera aussi utilisé comme nom affiché." />
+        <text name="as_validation_ready" text="Cette apparence est prête à être enregistrée." />
+        <text name="as_help_preset_id_title" text="ID du préréglage" />
+        <text name="as_help_preset_id_text" text="Une clé interne unique utilisée par Avatar Switcher et les mods compatibles.&#10;&#10;Exemple : jen_winter_workwear&#10;&#10;Les espaces sont enregistrés comme des tirets bas. Utilisez des lettres, chiffres, tirets bas ou traits d'union." />
+        <text name="as_help_display_name_title" text="Nom affiché" />
+        <text name="as_help_display_name_text" text="Le nom lisible affiché dans le menu Avatar Switcher.&#10;&#10;Exemple : Jen – Tenue de travail d'hiver&#10;&#10;Laissez vide pour utiliser l'ID du préréglage." />
+        <text name="as_help_category_title" text="Catégorie existante" />
+        <text name="as_help_category_text" text="Sélectionnez une catégorie déjà utilisée par des avatars enregistrés.&#10;&#10;La ligne sélectionnée est utilisée sauf si une valeur est saisie dans Nouvelle catégorie." />
+        <text name="as_help_new_category_title" text="Nouvelle catégorie" />
+        <text name="as_help_new_category_text" text="Saisissez un nouveau nom de catégorie pour la créer lors de l'enregistrement.&#10;&#10;Exemple : Saisonnier&#10;&#10;Laissez ce champ vide pour utiliser la catégorie existante sélectionnée." />
     </texts>
 </l10n>
