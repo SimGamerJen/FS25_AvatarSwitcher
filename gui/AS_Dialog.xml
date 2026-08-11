@@ -9,9 +9,9 @@
         <GuiElement profile="fs25_dialogContentContainer">
             <Text profile="dialogTitle" text="$l10n_as_title" id="dialogTitleElement" position="0px -30px" />
 
-            <Bitmap profile="asHeaderBox" id="categoryHeaderBox" position="45px -90px" size="330px 50px">
+            <GuiElement id="categoryHeaderBox" position="45px -90px" size="330px 50px">
                 <Text profile="asHeaderLeft" id="categoryHeaderText" position="10px 0px" size="280px 40.77px" text="$l10n_as_category" />
-            </Bitmap>
+            </GuiElement>
 
             <SmoothList profile="asList" id="categoryTable" position="50px -145px" size="320px 330px" focusInit="onOpen" focusChangeTop="nil" focusChangeBottom="nil">
                 <ListItem profile="asListItem" name="categoryRowTemplate" size="320px 40.77px">
@@ -24,10 +24,10 @@
                 <Slider profile="fs25_listSlider" size="6px 322px" dataElementId="categoryTable" id="categorySlider" />
             </ThreePartBitmap>
 
-            <Bitmap profile="asHeaderBox" id="presetHeaderBox" position="420px -90px" size="690px 50px">
+            <GuiElement id="presetHeaderBox" position="420px -90px" size="690px 50px">
                 <Text profile="asHeaderLeft" id="appearanceHeaderText" position="10px 0px" size="300px 40.77px" text="$l10n_as_appearance" />
                 <Text profile="asHeaderRight" id="presetIdHeaderText" position="500px 0px" size="175px 40.77px" text="$l10n_as_preset_id" />
-            </Bitmap>
+            </GuiElement>
 
             <SmoothList profile="asList" id="presetTable" handleFocus="true" selectedWithoutFocus="false" position="425px -145px" size="680px 330px" focusChangeTop="nil" focusChangeBottom="nil">
                 <ListItem profile="asListItem" name="presetRowTemplate" size="680px 40.77px">
@@ -40,9 +40,9 @@
                 <Slider profile="fs25_listSlider" size="6px 322px" dataElementId="presetTable" id="presetSlider" />
             </ThreePartBitmap>
 
-            <Bitmap profile="asDetailBox" id="detailBox" position="45px -515px" size="1065px 55px">
+            <GuiElement id="detailBox" position="45px -515px" size="1065px 55px">
                 <Text profile="asMetaText" id="detailText" position="10px 0px" size="1045px 45px" text="$l10n_as_select_saved_appearance" textLayoutMode="scrolling" />
-            </Bitmap>
+            </GuiElement>
         </GuiElement>
 
         <BoxLayout profile="fs25_dialogButtonBox" size="1120px 60px">
