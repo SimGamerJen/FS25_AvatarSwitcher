@@ -23,13 +23,14 @@
 
     <Profile name="asList" extends="emptyPanel" with="anchorStretchingYLeft pivotTopLeft" />
 
+    <!-- Retained for compatibility, but new dialogs no longer render these as Bitmap elements. -->
     <Profile name="asHeaderBox" extends="emptyPanel" with="anchorStretchingYLeft pivotTopLeft">
-        <imageSliceId value="noSlice"/>
+        <imageSliceId value="gui.empty"/>
         <imageColor value="$preset_colorListHeaderBackground"/>
     </Profile>
 
     <Profile name="asDetailBox" extends="emptyPanel" with="anchorStretchingYLeft pivotTopLeft">
-        <imageSliceId value="noSlice"/>
+        <imageSliceId value="gui.empty"/>
         <imageColor value="0 0 0 0.45"/>
     </Profile>
 
@@ -61,9 +62,10 @@
         <textAlignment value="left" />
     </Profile>
 
+    <!-- Use the known blank GUI slice instead of noSlice, which can expose the full UI atlas. -->
     <Profile name="asInputFieldButton" extends="buttonBase" with="anchorTopLeft pivotTopLeft">
         <height value="45px"/>
-        <imageSliceId value="noSlice"/>
+        <imageSliceId value="gui.empty"/>
         <imageColor value="0.07 0.075 0.08 0.96"/>
         <imageFocusedColor value="0.11 0.13 0.15 0.98"/>
         <imageHighlightedColor value="0.11 0.13 0.15 0.98"/>
@@ -78,6 +80,7 @@
         <textAlignment value="left"/>
         <textVerticalAlignment value="middle"/>
         <textOffset value="12px 0px"/>
+        <inputAction value=""/>
         <clickSound value="DEFAULT_CLICK"/>
         <sendActionOnRelease value="true"/>
     </Profile>
