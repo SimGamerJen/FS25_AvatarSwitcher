@@ -24,10 +24,12 @@
     <Profile name="asList" extends="emptyPanel" with="anchorStretchingYLeft pivotTopLeft" />
 
     <Profile name="asHeaderBox" extends="emptyPanel" with="anchorStretchingYLeft pivotTopLeft">
+        <imageSliceId value="noSlice"/>
         <imageColor value="$preset_colorListHeaderBackground"/>
     </Profile>
 
     <Profile name="asDetailBox" extends="emptyPanel" with="anchorStretchingYLeft pivotTopLeft">
+        <imageSliceId value="noSlice"/>
         <imageColor value="0 0 0 0.45"/>
     </Profile>
 
@@ -59,18 +61,25 @@
         <textAlignment value="left" />
     </Profile>
 
-    <Profile name="asInputFieldButton" extends="buttonPrimary" with="anchorTopLeft pivotTopLeft">
+    <Profile name="asInputFieldButton" extends="buttonBase" with="anchorTopLeft pivotTopLeft">
         <height value="45px"/>
+        <imageSliceId value="noSlice"/>
         <imageColor value="0.07 0.075 0.08 0.96"/>
         <imageFocusedColor value="0.11 0.13 0.15 0.98"/>
+        <imageHighlightedColor value="0.11 0.13 0.15 0.98"/>
         <imageSelectedColor value="0.11 0.13 0.15 0.98"/>
+        <imagePressedColor value="0.11 0.13 0.15 0.98"/>
         <textColor value="$preset_fs25_colorMainLight"/>
         <textFocusedColor value="$preset_fs25_colorMainLight"/>
+        <textHighlightedColor value="$preset_fs25_colorMainLight"/>
         <textSelectedColor value="$preset_fs25_colorMainLight"/>
+        <textPressedColor value="$preset_fs25_colorMainLight"/>
         <textSize value="15px"/>
         <textAlignment value="left"/>
+        <textVerticalAlignment value="middle"/>
         <textOffset value="12px 0px"/>
-        <inputAction value=""/>
+        <clickSound value="DEFAULT_CLICK"/>
+        <sendActionOnRelease value="true"/>
     </Profile>
 
     <Profile name="asButtonDelete" extends="buttonExtra1">
