@@ -36,7 +36,7 @@
    ```
 
 3. Enable **Avatar Switcher** when loading your save.
-4. Press **F11** to open Avatar Switcher. The binding can be changed in the in-game controls menu.
+4. Press **Ctrl+Alt+A** to open Avatar Switcher. The binding can be changed in the in-game controls menu.
 
 Do not extract the mod ZIP into the mods folder.
 
@@ -53,7 +53,7 @@ Do not extract the mod ZIP into the mods folder.
 
 ### Applying an appearance
 
-1. Press the mapped **Open Avatar Switcher** control (F11 by default).
+1. Press the mapped **Open Avatar Switcher** control (**Ctrl+Alt+A** by default).
 2. Select a category.
 3. Select a saved appearance.
 4. Choose **Apply**.
