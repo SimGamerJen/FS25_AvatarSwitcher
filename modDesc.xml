@@ -23,14 +23,14 @@ Features:
 - Store presets in the Avatar Switcher mod settings folder
 
 Default control:
-Ctrl+Alt+A opens Avatar Switcher. The key binding can be changed in the in-game controls menu.
+Alt+Shift+A opens Avatar Switcher. The key binding can be changed in the in-game controls menu.
 
 How to use:
 1. Open the wardrobe and configure the player appearance.
 2. Select "Save to AvatarSwitcher".
 3. Enter a unique Preset ID and an optional Display Name.
 4. Select an existing category or enter a new category, then select Save.
-5. Press Ctrl+Alt+A to open Avatar Switcher.
+5. Press Alt+Shift+A to open Avatar Switcher.
 6. Select a category and appearance, then select Apply.
 
 Deleting a preset does not change the appearance currently being used.
@@ -50,14 +50,14 @@ Funktionen:
 - Speichere Voreinstellungen im Einstellungsordner des Avatar-Wechsler-Mods
 
 Standardsteuerung:
-Ctrl+Alt+A öffnet den Avatar-Wechsler. Die Tastenbelegung kann im Steuerungsmenü des Spiels geändert werden.
+Alt+Shift+A öffnet den Avatar-Wechsler. Die Tastenbelegung kann im Steuerungsmenü des Spiels geändert werden.
 
 So funktioniert es:
 1. Öffne die Garderobe und passe das Aussehen des Spielers an.
 2. Wähle „In Avatar-Wechsler speichern“.
 3. Gib eine eindeutige Voreinstellungs-ID und optional einen Anzeigenamen ein.
 4. Wähle eine vorhandene Kategorie aus oder gib eine neue Kategorie ein und wähle anschließend „Speichern“.
-5. Drücke Ctrl+Alt+A, um den Avatar-Wechsler zu öffnen.
+5. Drücke Alt+Shift+A, um den Avatar-Wechsler zu öffnen.
 6. Wähle eine Kategorie und ein Aussehen aus und wähle anschließend „Übernehmen“.
 
 Das Löschen einer Voreinstellung ändert nichts am aktuell verwendeten Aussehen.
@@ -77,14 +77,14 @@ Fonctionnalités :
 - Stocker les préréglages dans le dossier de paramètres du mod Avatar Switcher
 
 Commande par défaut :
-Ctrl+Alt+A ouvre Avatar Switcher. Cette touche peut être modifiée dans le menu des commandes du jeu.
+Alt+Shift+A ouvre Avatar Switcher. Cette touche peut être modifiée dans le menu des commandes du jeu.
 
 Utilisation :
 1. Ouvrez la garde-robe et configurez l'apparence du joueur.
 2. Sélectionnez "Enregistrer dans AvatarSwitcher".
 3. Saisissez un ID de préréglage unique et, si vous le souhaitez, un nom d'affichage.
 4. Sélectionnez une catégorie existante ou saisissez une nouvelle catégorie, puis sélectionnez Enregistrer.
-5. Appuyez sur Ctrl+Alt+A pour ouvrir Avatar Switcher.
+5. Appuyez sur Alt+Shift+A pour ouvrir Avatar Switcher.
 6. Sélectionnez une catégorie et une apparence, puis sélectionnez Appliquer.
 
 La suppression d'un préréglage ne modifie pas l'apparence actuellement utilisée.
@@ -120,7 +120,7 @@ Ce mod est conçu pour le mode solo et ne prend pas en charge le multijoueur.
 
     <inputBinding>
         <actionBinding action="ASZ_HUD">
-            <binding device="KB_MOUSE_DEFAULT" input="KEY_lctrl KEY_lalt KEY_a" />
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_lalt KEY_lshift KEY_a" />
         </actionBinding>
     </inputBinding>
 
