@@ -30,9 +30,7 @@
                 <Text profile="asHeaderLeft" id="newCategoryHeaderText" position="0px -332px" size="570px 32px" text="$l10n_as_new_category_optional" />
                 <Button profile="asInputFieldButton" id="newCategoryField" position="0px -368px" size="570px 40px" text="$l10n_as_new_category_optional" onClick="onClickNewCategoryField" />
 
-                <GuiElement position="0px -416px" size="570px 46px">
-                    <Text profile="asMetaText" id="validationText" position="0px 0px" size="570px 44px" text="$l10n_as_save_instructions" textMaxNumLines="2" />
-                </GuiElement>
+                <Text profile="asMetaText" id="validationText" position="0px -416px" size="570px 44px" text="$l10n_as_save_instructions" textMaxNumLines="2" />
             </GuiElement>
 
             <GuiElement position="665px -70px" size="330px 480px">
