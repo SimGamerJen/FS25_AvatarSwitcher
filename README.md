@@ -2,6 +2,12 @@
 
 **Avatar Switcher** is a Farming Simulator 25 script mod that lets you save the current player appearance as a reusable preset and switch between saved avatars from an in-game selector.
 
+## Release Status
+
+**Version 1.0.0.0 was approved by GIANTS Software and released on ModHub on 7 September 2026.**
+
+For normal installation, use the Farming Simulator 25 ModHub. This GitHub repository remains the source, development and integration reference for Avatar Switcher.
+
 ## Features
 
 - Save the current wardrobe appearance as an avatar preset.
@@ -28,6 +34,12 @@
 
 ## Installation
 
+### ModHub
+
+Install **Avatar Switcher** directly through the Farming Simulator 25 ModHub.
+
+### Manual installation
+
 1. Download `FS25_AvatarSwitcher.zip`.
 2. Copy the ZIP file into your Farming Simulator 25 mods folder:
 
@@ -39,6 +51,8 @@
 4. Press **Alt+Shift+A** to open Avatar Switcher. The binding can be changed in the in-game controls menu.
 
 Do not extract the mod ZIP into the mods folder.
+
+> Existing users who previously mapped Avatar Switcher to another key may retain that personal binding in `inputBinding.xml`. FS25 preserves user control assignments when a mod changes its default binding.
 
 ## Using Avatar Switcher
 
