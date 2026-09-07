@@ -10,19 +10,13 @@
             <Text profile="dialogTitle" text="$l10n_as_save_avatar" id="dialogTitleElement" position="0px -30px" />
 
             <GuiElement position="45px -70px" size="600px 480px">
-                <GuiElement position="0px 0px" size="570px 32px">
-                    <Text profile="asHeaderLeft" id="presetIdHeaderText" position="0px 0px" size="570px 32px" text="$l10n_as_preset_id" />
-                </GuiElement>
+                <Text profile="asHeaderLeft" id="presetIdHeaderText" position="0px 0px" size="570px 32px" text="$l10n_as_preset_id" />
                 <Button profile="asInputFieldButton" id="idField" position="0px -36px" size="570px 40px" text="$l10n_as_preset_id" onClick="onClickIdField" />
 
-                <GuiElement position="0px -84px" size="570px 32px">
-                    <Text profile="asHeaderLeft" id="displayNameHeaderText" position="0px 0px" size="570px 32px" text="$l10n_as_display_name" />
-                </GuiElement>
+                <Text profile="asHeaderLeft" id="displayNameHeaderText" position="0px -84px" size="570px 32px" text="$l10n_as_display_name" />
                 <Button profile="asInputFieldButton" id="displayNameField" position="0px -120px" size="570px 40px" text="$l10n_as_display_name" onClick="onClickDisplayNameField" />
 
-                <GuiElement position="0px -168px" size="570px 32px">
-                    <Text profile="asHeaderLeft" id="categoryHeaderText" position="0px 0px" size="570px 32px" text="$l10n_as_category" />
-                </GuiElement>
+                <Text profile="asHeaderLeft" id="categoryHeaderText" position="0px -168px" size="570px 32px" text="$l10n_as_category" />
 
                 <SmoothList profile="asList" id="categoryTable" position="0px -204px" size="550px 118px" handleFocus="true" selectedWithoutFocus="true">
                     <ListItem profile="asListItem" name="categoryRowTemplate" size="550px 38px">
@@ -33,14 +27,10 @@
                     <Slider profile="fs25_listSlider" size="6px 110px" dataElementId="categoryTable" id="categorySlider" />
                 </ThreePartBitmap>
 
-                <GuiElement position="0px -332px" size="570px 32px">
-                    <Text profile="asHeaderLeft" id="newCategoryHeaderText" position="0px 0px" size="570px 32px" text="$l10n_as_new_category_optional" />
-                </GuiElement>
+                <Text profile="asHeaderLeft" id="newCategoryHeaderText" position="0px -332px" size="570px 32px" text="$l10n_as_new_category_optional" />
                 <Button profile="asInputFieldButton" id="newCategoryField" position="0px -368px" size="570px 40px" text="$l10n_as_new_category_optional" onClick="onClickNewCategoryField" />
 
-                <GuiElement position="0px -416px" size="570px 46px">
-                    <Text profile="asMetaText" id="validationText" position="0px 0px" size="570px 44px" text="$l10n_as_save_instructions" textMaxNumLines="2" />
-                </GuiElement>
+                <Text profile="asMetaText" id="validationText" position="0px -416px" size="570px 44px" text="$l10n_as_save_instructions" textMaxNumLines="2" />
             </GuiElement>
 
             <GuiElement position="665px -70px" size="330px 480px">
